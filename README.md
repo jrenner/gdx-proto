@@ -4,7 +4,7 @@
 
 ---------------
 
-###GDX-Proto is immature. Breaking changes are to be expected.
+###GDX-Proto is immature. Breaking changes are to be expected. Code might be a bit messy before it gets a nice refactoring.
 
 -----------
 
