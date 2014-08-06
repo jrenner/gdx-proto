@@ -82,3 +82,5 @@ Contributions are welcome! If you have a large contribution you wish to make, ma
 - General refactoring, check all disposables are disposed (avoid memory leaks)
 - Implement frustum and distance culling
 
+## License
+Apache 2.0
