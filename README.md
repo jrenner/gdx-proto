@@ -42,7 +42,7 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - Optional logging to file, see Log class
 
 ## Demo - First Person Shooter
-**A pre-built jar of the [desktop demo can be downloaded here](bin/fps-demo.jar).**
+**A pre-built jar of the [desktop demo can be downloaded here](https://github.com/jrenner/gdx-proto/blob/master/bin/fps-demo.jar?raw=true).**
 To play a simple local, singleplayer demo run the `desktop:run` gradle task
 There are also many command line options available, such as setting screen size, starting a server, choosing what hostname to connect to, etc. To see a full list:
 Run the `desktop:dist` gradle task to create the desktop jar.
