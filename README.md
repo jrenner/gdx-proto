@@ -15,7 +15,7 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 ## Overview of Features
 
 ### Graphics
-- Basic 3d rendering using a slightly modified version of the default libgdx 3d shader. It takes advantage of the new libgdx 3D API.  You can put models made from 3d modeling applications such as Blender into your game.  Export to fbx, use libgdx's fbx converter to convert to g3db, and modify the Assets class to load your assets.
+- Basic 3d rendering using a slightly modified version of the default libgdx 3d shader. It takes advantage of the new libgdx 3D API.
 - 3D Particle system based on the new libgdx 3d particle system (version 1.2.1+, not included in 1.2.0)
 
 ### Physics
@@ -30,9 +30,10 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - Client prediction (for movement only, not yet implemented for projectiles)
 - Simple chat system
 - Supports libgdx headless backend for creating a headless server, such as on a VPS
+- Server transmits level geometry to client upon connection
+- "The server is the man": Most logic is run server-side to prevent cheats or hacking.
 
 ### Other
-- Desktop and mobile input handlers
 - Movement component class handles acceleration, velocity, position, rotation, max speeds
 - Subclasses of Movement: GroundMovement and FlyingMovement
 - Optional logging to file, see Log class
