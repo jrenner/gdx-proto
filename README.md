@@ -1,5 +1,7 @@
 #GDX-Proto - A lightweight 3D engine built with [libgdx](http://libgdx.badlogicgames.com)
 
+![screenshot](img/fps-demo-screen2.jpg)
+
 ---------------
 
 ###GDX-Proto is immature. Breaking changes are to be expected.
@@ -34,11 +36,13 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - "The server is the man": Most logic is run server-side to prevent cheats or hacking.
 
 ### Other
+- Basic Entity system with DynamicEntities, represented by either Decals (Billboard sprites) or 3D models
 - Movement component class handles acceleration, velocity, position, rotation, max speeds
 - Subclasses of Movement: GroundMovement and FlyingMovement
 - Optional logging to file, see Log class
 
 ## Demo - First Person Shooter
+**A pre-built jar of the [desktop demo can be downloaded here](bin/fps-demo.jar).**
 To play a simple local, singleplayer demo run the `desktop:run` gradle task
 There are also many command line options available, such as setting screen size, starting a server, choosing what hostname to connect to, etc. To see a full list:
 Run the `desktop:dist` gradle task to create the desktop jar.
