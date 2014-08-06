@@ -1,0 +1,4 @@
+From opengameart.org:
+    - models/ground1.jpg: http://opengameart.org/node/10175
+    - models/wood.png: http://opengameart.org/node/8718
+    - textures/marble.jpg: http://opengameart.org/node/7838
