@@ -40,6 +40,10 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - Movement component class handles acceleration, velocity, position, rotation, max speeds
 - Subclasses of Movement: GroundMovement and FlyingMovement
 - Optional logging to file, see Log class
+- 
+
+### Using GDX-Proto For Your Own Projects
+Currentyl, GDX-Proto does not exist as a library.  The best way to use it for your own project is to use it as a base for a new project, and remove parts you do not wish, while adding your own code on top.  In the future it may be modified to be more convenient.
 
 ## Demo - First Person Shooter
 **A pre-built jar of the [desktop demo can be downloaded here](https://github.com/jrenner/gdx-proto/blob/master/bin/fps-demo.jar?raw=true).**
