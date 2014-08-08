@@ -21,7 +21,7 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - 3D Particle system based on the new libgdx 3d particle system (version 1.2.1+, not included in 1.2.0)
 
 ### Physics
-- The Bullet physics library is used for collision detection, but not for collision resolution.  This allows for fast and efficient collision detection without the performance penalties of a fully simulated bullet world.  A default collision resolution system is included in the Physics class, but it can be modifided to suit your needs.
+- The Bullet physics library is used for collision detection, but not for collision resolution.  This allows for fast and efficient collision detection without the performance penalties of a fully simulated bullet world.  A default collision resolution system is included in the Physics class, but it can be modified to suit your needs.
 - Raycasting for projectile hit detection 
 
 ### Networking
@@ -41,7 +41,7 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - Subclasses of Movement: GroundMovement and FlyingMovement
 
 ### Using GDX-Proto For Your Own Projects
-Currentyl, GDX-Proto does not exist as a library.  The best way to use it for your own project is to use it as a base for a new project, and remove parts you do not wish, while adding your own code on top.  In the future it may be modified to be more convenient.
+Currently, GDX-Proto does not exist as a library.  The best way to use it for your own project is to use it as a base for a new project, and remove parts you do not wish, while adding your own code on top.  In the future it may be modified to be more convenient.
 
 ## Demo - First Person Shooter
 **A pre-built jar of the [desktop demo can be downloaded here](https://github.com/jrenner/gdx-proto/blob/master/bin/fps-demo.jar?raw=true).**
