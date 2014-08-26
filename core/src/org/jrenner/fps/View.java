@@ -179,6 +179,8 @@ public class View implements Disposable {
 	public static int width() { return Gdx.graphics.getWidth(); }
 	public static int height() { return Gdx.graphics.getHeight(); }
 
+	public static float screenSizeRatio() { return width() / 1920f; }
+
 	public void resetCamera() {
 		camera.position.set(0f, 3f, -3f);
 		camera.lookAt(0f, 0f, 0f);

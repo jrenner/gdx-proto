@@ -21,7 +21,7 @@ public class CommandArgs {
 		options.addOption("c", "client", false, "connect to server as a client");
 		options.addOption("a", "address", true, "supply hostname address to connect to");
 		options.addOption("d", "lag-delay", true, "simulate lag with argument = milliseconds of lag");
-		options.addOption("z", "screensize", true, "suppley screen size in the form of WIDTHxHEIGHT, i.e. 1920x1080");
+		options.addOption("z", "screensize", true, "supply screen size in the form of WIDTHxHEIGHT, i.e. 1920x1080");
 		options.addOption("h", "help", false, "print help");
 
 		boolean printHelpAndQuit = false;

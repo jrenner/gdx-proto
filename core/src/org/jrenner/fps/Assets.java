@@ -93,8 +93,8 @@ public class Assets {
 
 		if (Main.isClient()) {
 			SmartFontGenerator smart = new SmartFontGenerator();
-			int size = 12;
-			int largeSize = 18;
+			int size = (int) (30f * View.screenSizeRatio());
+			int largeSize = (int) (46f * View.screenSizeRatio());
 			//FileHandle fontFile = Gdx.files.internal("Exo-Regular.otf");
 			//BitmapFont font = smart.createFont(fontFile, "exo-" + size, size);
 			FileHandle fontFile = Gdx.files.internal("fonts/LiberationMono-Regular.ttf");

@@ -41,7 +41,8 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		Log.setLevel(Log.DEBUG);
-		Platform = Gdx.app.getType();
+		//Platform = Gdx.app.getType();
+		Platform = Application.ApplicationType.Android;
 		Assets assets = new Assets();
 		assets.loadAll();
 		Log.debug("finished loading assets");
@@ -54,8 +55,8 @@ public class Main extends ApplicationAdapter {
 			new Particles();
 			input = new Input();
 			inputMulti = new InputMultiplexer();
-			inputMulti.addProcessor(input);
 			inputMulti.addProcessor(View.inst.hud.stage);
+			inputMulti.addProcessor(input);
 			if (isMobile()) {
 				inputMulti.addProcessor(GestureHandler.createGestureHandler());
 			}

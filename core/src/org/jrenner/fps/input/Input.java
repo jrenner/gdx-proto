@@ -58,15 +58,16 @@ public class Input extends InputAdapter {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		//DynamicEntity.player.startShoot();
-		InputBind ib = InputBind.matchByMouse(button);
-
-		return true;
+		/*InputBind ib = InputBind.matchByMouse(button);
+		return true;*/
+		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		//DynamicEntity.player.stopShoot();
-		return true;
+		//return true;
+		return false;
 	}
 
 	@Override
@@ -209,6 +210,9 @@ public class Input extends InputAdapter {
 				tmp.add(trans.vector);
 			}
 		}
+		if (Main.isMobile()) {
+			View.inst.hud.getMoveTranslation(tmp);
+		}
 		if (!tmp.isZero()) {
 			player.entity.setRelativeDestinationByYaw(tmp.nor());
 		} else {
@@ -227,7 +231,9 @@ public class Input extends InputAdapter {
 		}
 
 		boolean shooting = false;
-		if (InputBind.Shoot.isPressed()) {
+		boolean mobileShoot = Main.isMobile() && View.inst.hud.shoot.isPressed();
+		boolean desktopShoot = Main.isDesktop() && InputBind.Shoot.isPressed();
+		if (mobileShoot || desktopShoot) {
 			cmdPack.set(CommandPackage.SHOOT, true);
 			shooting = true;
 		}

@@ -292,7 +292,7 @@ public class Physics implements Disposable {
 	}
 
 	private ClosestRayResultCallback staticRayCallback;
-	//private ClosestNotMeRayResultCallback notMeRayCallback;
+	//private ClosestNotMeRayResultCallback notMeRayCallback
 	private ClosestRayResultCallback rayCallback;
 
 

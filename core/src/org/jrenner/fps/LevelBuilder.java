@@ -149,7 +149,7 @@ public class LevelBuilder {
 		//float hi = GameWorld.WORLD_WIDTH;
 		float x = 20f;
 		float z = 0f;
-		int numOfStaticObjects = 75;
+		int numOfStaticObjects = 20;
 		for (int i = 0; i < numOfStaticObjects; i++) {
 			x = MathUtils.random(10f, 200f);
 			z = MathUtils.random(10f, 200f);

@@ -2,6 +2,7 @@ package org.jrenner.fps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,9 +25,9 @@ public class HUD {
 	Skin skin;
 	Label label;
 	Label chatLabel;
-	float bw = 100f;
-	float bh = 60f;
-	public TextButton forward, back, right, left;
+	float bw = 200f * View.screenSizeRatio();
+	float bh = 160f * View.screenSizeRatio();
+	public TextButton forward, back, right, left, shoot;
 	private Table arrowsTable;
 	private TextField chatField;
 
@@ -83,7 +84,7 @@ public class HUD {
 			stage.addActor(arrowsTable);
 			arrowsTable.align(Align.right | Align.bottom);
 
-			float sz = View.width() / 16f;
+			float sz = bw;
 			float delta = sz;
 			float baseX = (View.width() - delta) - 10f;
 			float baseY = 10f;
@@ -118,11 +119,17 @@ public class HUD {
 			jumpBtn.setSize(sz, sz);
 			jumpBtn.setPosition(baseX + dX, baseY + dY);
 
+			dX -= delta * 2;
+			shoot = new TextButton("Shoot", skin);
+			shoot.setPosition(baseX + dX, baseY + dY);
+			shoot.setSize(sz, sz);
+
 			stage.addActor(forward);
 			stage.addActor(right);
 			stage.addActor(back);
 			stage.addActor(left);
 			stage.addActor(jumpBtn);
+			stage.addActor(shoot);
 		}
 
 		SpriteDrawable crossDraw = new SpriteDrawable(Crosshair.create());
@@ -135,7 +142,7 @@ public class HUD {
 
 	private StringBuilder sb = new StringBuilder();
 
-	boolean debugHUD = true;
+	boolean debugHUD = false;
 
 	public void update() {
 		//if (Main.frame % 10 != 0) return;
@@ -274,5 +281,23 @@ public class HUD {
 				return false;
 			}
 		});
+	}
+
+	public void getMoveTranslation(Vector3 trans) {
+		trans.setZero();
+		float x = 0f, y = 0f, z = 0f;
+		if (forward.isPressed()) {
+			z += 1f;
+		}
+		if (back.isPressed()) {
+			z -= 1f;
+		}
+		if (left.isPressed()) {
+			x += 1f;
+		}
+		if (right.isPressed()) {
+			x -= 1f;
+		}
+		trans.set(x, y, z);
 	}
 }

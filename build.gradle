@@ -16,7 +16,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'fps'
-        gdxVersion = '1.2.1-SNAPSHOT'
+        gdxVersion = '1.3.2-SNAPSHOT'
         customGdxLocation = '/home/jrenner/libgdx/dist'
         roboVMVersion = '0.0.13'
     }
