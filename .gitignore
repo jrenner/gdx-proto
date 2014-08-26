@@ -1,3 +1,6 @@
+## dynamically generated fonts cached by gdx-smart-font
+**/generated-fonts/
+
 ## texture-packer stuff, we only need the final product atlas
 texture-packer/
 
