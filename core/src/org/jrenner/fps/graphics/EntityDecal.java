@@ -25,8 +25,12 @@ public class EntityDecal {
 		list.add(this);
 	}
 
+	private static Vector3 tmp = new Vector3();
+
 	public void update() {
 		decal.setPosition(entity.getPosition());
-		decal.lookAt(View.inst.getCamera().position, View.inst.getCamera().up);
+		tmp.set(View.inst.getCamera().position);
+		tmp.y = entity.getPosition().y;
+		decal.lookAt(tmp, View.inst.getCamera().up);
 	}
 }

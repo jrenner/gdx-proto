@@ -41,8 +41,10 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		Log.setLevel(Log.DEBUG);
-		//Platform = Gdx.app.getType();
-		Platform = Application.ApplicationType.Android;
+		Platform = Gdx.app.getType();
+		// we can pretend to be Android while running on desktop to test mobile features
+		// such as mobile-specific input
+		// Platform = Application.ApplicationType.Android;
 		Assets assets = new Assets();
 		assets.loadAll();
 		Log.debug("finished loading assets");
