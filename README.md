@@ -44,8 +44,12 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 Currently, GDX-Proto does not exist as a library.  The best way to use it for your own project is to use it as a base for a new project, and remove parts you do not wish, while adding your own code on top.  In the future it may be modified to be more convenient.
 
 ## Demo - First Person Shooter
+
 **A pre-built jar of the [desktop demo can be downloaded here](https://github.com/jrenner/gdx-proto/blob/master/bin/desktop-1.0.jar?raw=true).**
+
 **[Android APK](https://github.com/jrenner/gdx-proto/blob/master/bin/android-debug-unaligned.apk?raw=true)**
+The apk is currently setup just to launch a localclient
+
 To play a simple local, singleplayer demo run the `desktop:run` gradle task
 There are also many command line options available, such as setting screen size, starting a server, choosing what hostname to connect to, etc. To see a full list:
 Run the `desktop:dist` gradle task to create the desktop jar.
