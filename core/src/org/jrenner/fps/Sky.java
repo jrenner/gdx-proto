@@ -79,7 +79,7 @@ public class Sky {
 	}
 
 	public static void disable () {
-		//TODO Make this a bit nicer?
+		//TODO Make this a little bit nicer?
 		modelInstance = null;
 		isEnabled = false;
 	}
