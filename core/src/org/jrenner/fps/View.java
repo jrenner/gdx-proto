@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+
 import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.graphics.EntityDecal;
 import org.jrenner.fps.graphics.EntityModel;
@@ -96,6 +98,15 @@ public class View implements Disposable {
 			Profiler.enable();
 		}
 		hud = new HUD();
+		
+		Sky.createSkyBox(
+			Assets.manager.get("textures/skybox/xpos.png", Texture.class),
+			Assets.manager.get("textures/skybox/xneg.png", Texture.class),
+			Assets.manager.get("textures/skybox/ypos.png", Texture.class),
+			Assets.manager.get("textures/skybox/yneg.png", Texture.class),
+			Assets.manager.get("textures/skybox/zpos.png", Texture.class),
+			Assets.manager.get("textures/skybox/zneg.png", Texture.class)
+		);
 	}
 
 	private void updateCamera() {
@@ -120,8 +131,12 @@ public class View implements Disposable {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		camera.up.set(Vector3.Y);
 		updateCamera();
+		updateSky();
 
 		modelBatch.begin(camera);
+		if (Sky.isEnabled()) {
+			modelBatch.render(Sky.modelInstance);
+		}
 		for (EntityModel entityModel : EntityModel.list) {
 			entityModel.update();
 			modelBatch.render(entityModel.modelInstance, environ);
@@ -171,7 +186,13 @@ public class View implements Disposable {
 		Particles.inst.system.end();
 		modelBatch.render(Particles.inst.system);
 	}
-
+	
+	private void updateSky() {
+		if (Sky.isEnabled()) {
+			Sky.update(camera.position);
+		}
+	}
+	
 	private void updateLights() {
 		camLight.position.set(camera.position);
 	}

@@ -182,6 +182,7 @@ public class Main extends ApplicationAdapter {
 		Block.init();
 		if (isClient()) {
 			Shadow.init();
+			Sky.init();
 		}
 		Entity.init();
 		Movement.init();

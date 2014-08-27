@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.UBJsonReader;
+
 import org.jrenner.fps.headless.HeadlessG3dModelLoader;
 import org.jrenner.fps.headless.HeadlessModel;
 import org.jrenner.fps.headless.HeadlessModelLoader;
@@ -79,6 +80,7 @@ public class Assets {
 			manager.load("models/strange-ramp2.g3db", Model.class, modelParam);
 			manager.load("models/ground.g3db", Model.class, modelParam);
 			manager.load("models/level.g3db", Model.class, modelParam);
+			manager.load("models/skybox.g3db", Model.class, modelParam);
 		}
 
 		if (Main.isClient()) {
@@ -127,6 +129,15 @@ public class Assets {
 		manager.load("models/ground1.jpg", Texture.class, textureParam);
 		manager.load("textures/marble.jpg", Texture.class, textureParam);
 		manager.load("textures/shadow.png", Texture.class);
+		
+		//Load Skybox
+		manager.load("textures/skybox/xpos.png", Texture.class);
+		manager.load("textures/skybox/xneg.png", Texture.class);
+		manager.load("textures/skybox/ypos.png", Texture.class);
+		manager.load("textures/skybox/yneg.png", Texture.class);
+		manager.load("textures/skybox/zpos.png", Texture.class);
+		manager.load("textures/skybox/zneg.png", Texture.class);
+		
 		loadCrawlTextures();
 	}
 

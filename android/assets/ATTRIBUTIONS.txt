@@ -3,3 +3,4 @@ From opengameart.org:
     - models/wood.png: http://opengameart.org/node/8718
     - textures/marble.jpg: http://opengameart.org/node/7838
     - monster decals are from Dungeon Crawl Stone Soup (released as public domain on opengameart.org)
+    - textures/skybox: http://opengameart.org/content/interstellar-skybox-png

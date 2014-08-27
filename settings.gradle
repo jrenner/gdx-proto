@@ -1,1 +1,1 @@
-include 'headless', 'desktop', 'android', 'ios', 'core', 'texture-packer'
+include 'headless', 'desktop', 'android', 'ios', 'core'
