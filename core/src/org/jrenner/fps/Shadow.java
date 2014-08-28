@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import static com.badlogic.gdx.graphics.VertexAttributes.Usage;
 
 /** blob shadow */
-// TODO make normal match the ground normal below the shadow
 public class Shadow {
 	private static Model model;
 	public ModelInstance modelInstance;
