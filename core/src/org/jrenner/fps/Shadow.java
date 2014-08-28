@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import org.jrenner.fps.Physics.RaycastReport;
+
 
 import static com.badlogic.gdx.graphics.VertexAttributes.Usage;
 
@@ -55,10 +57,10 @@ public class Shadow {
 	private static Vector3 tmp = new Vector3();
 
 	public void update(Vector3 position) {
-		// TODO shadows should adapt the ground normal underneath
 		float height = Physics.inst.getShadowHeightAboveGround(position) - heightOffset;
 		tmp.set(position.x, position.y - height, position.z);
 		modelInstance.transform.setToTranslation(tmp);
+		modelInstance.transform.rotate(Vector3.Y, Physics.inst.raycastReport.hitNormal);
 	}
 
 	public void removeFromGame() {
