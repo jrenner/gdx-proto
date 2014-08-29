@@ -1,6 +1,7 @@
 
 package org.jrenner.fps;
 
+import com.badlogic.gdx.graphics.g3d.Material;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -9,7 +10,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.DepthTestAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * @author Caresi Labs
@@ -26,10 +26,10 @@ public class Sky {
 	//public static Array<ModelInstance> skyEntities;
 	public static ModelInstance modelInstance;
 	
-	private static boolean isEnabled;
+	private static boolean enabled;
 
 	public static void init () {
-		isEnabled = false;
+		enabled = false;
 		
 		// Load managed model
 		model = Assets.manager.get("models/skybox.g3db", Model.class);
@@ -54,7 +54,7 @@ public class Sky {
 		modelInstance.materials.get(4).set(new DepthTestAttribute(0));
 		modelInstance.materials.get(5).set(new DepthTestAttribute(0));
 		
-		isEnabled = true;
+		enabled = true;
 	}
 
 	public static void createSkyBox (Texture skybox) {
@@ -64,7 +64,7 @@ public class Sky {
 		modelInstance.materials.get(0).set(TextureAttribute.createDiffuse(skybox));
 		modelInstance.materials.get(0).set(new DepthTestAttribute(0));
 		
-		isEnabled = true;
+		enabled = true;
 	}
 
 	public static void createSkySphere () {
@@ -81,10 +81,10 @@ public class Sky {
 	public static void disable () {
 		//TODO Make this a little bit nicer?
 		modelInstance = null;
-		isEnabled = false;
+		enabled = false;
 	}
 	
 	public static boolean isEnabled () {
-		return isEnabled;
+		return enabled;
 	}
 }

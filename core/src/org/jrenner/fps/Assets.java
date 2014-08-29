@@ -70,7 +70,6 @@ public class Assets {
 			manager.load("models/strange-ramp1.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/ground.g3db", HeadlessModel.class, modelParam);
-			manager.load("models/level.g3db", HeadlessModel.class, modelParam);
 		} else {
 			ModelLoader.ModelParameters modelParam = new ModelLoader.ModelParameters();
 			modelParam.textureParameter = modTexParam;
@@ -79,7 +78,6 @@ public class Assets {
 			manager.load("models/strange-ramp1.g3db", Model.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", Model.class, modelParam);
 			manager.load("models/ground.g3db", Model.class, modelParam);
-			manager.load("models/level.g3db", Model.class, modelParam);
 			manager.load("models/skybox.g3db", Model.class, modelParam);
 		}
 
@@ -128,7 +126,7 @@ public class Assets {
 		textureParam.wrapV = Texture.TextureWrap.Repeat;
 		manager.load("models/ground1.jpg", Texture.class, textureParam);
 		manager.load("textures/marble.jpg", Texture.class, textureParam);
-		manager.load("textures/shadow.png", Texture.class);
+		manager.load("textures/shadow.png", Texture.class, textureParam);
 		
 		//Load Skybox
 		manager.load("textures/skybox/xpos.png", Texture.class);
@@ -137,12 +135,10 @@ public class Assets {
 		manager.load("textures/skybox/yneg.png", Texture.class);
 		manager.load("textures/skybox/zpos.png", Texture.class);
 		manager.load("textures/skybox/zneg.png", Texture.class);
-		
-		loadCrawlTextures();
-	}
 
-	private void loadCrawlTextures() {
-		manager.load("texture-packs/monsters.atlas", TextureAtlas.class);
+
+		// load Texture Atlas
+		manager.load("texture-packs/texture-pack.atlas", TextureAtlas.class);
 	}
 
 	public static void loadParticleEffects(ParticleSystem particleSystem) {
@@ -156,5 +152,9 @@ public class Assets {
 
 	public void dispose() {
 		Tools.dispose(manager);
+	}
+
+	public static TextureAtlas getAtlas() {
+		return Assets.manager.get("texture-packs/texture-pack.atlas", TextureAtlas.class);
 	}
 }

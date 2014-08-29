@@ -1,0 +1,13 @@
+
+texture-pack.png
+size: 34,34
+format: RGBA8888
+filter: MipMapLinearLinear,Linear
+repeat: none
+sprites/test-guy
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

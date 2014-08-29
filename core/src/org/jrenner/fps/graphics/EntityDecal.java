@@ -17,8 +17,9 @@ public class EntityDecal {
 
 	public EntityDecal(Entity entity) {
 		this.entity = entity;
-		TextureAtlas atlas = Assets.manager.get("texture-packs/monsters.atlas", TextureAtlas.class);
-		TextureRegion texReg = atlas.getRegions().random();
+		//TextureAtlas atlas = Assets.manager.get("texture-packs/monsters.atlas", TextureAtlas.class);
+		//TextureRegion texReg = atlas.getRegions().random();
+		TextureRegion texReg = Assets.getAtlas().findRegion("sprites/test-guy");
 		float w = 2f;
 		float h = 2f;
 		decal = Decal.newDecal(w, h, texReg, true);
