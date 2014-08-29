@@ -40,7 +40,7 @@ public class BulletHit {
 		for (DynamicEntity ent : DynamicEntity.list) {
 			float distSqr = ent.getPosition().dst2(location);
 			if (distSqr <= minDist * minDist) {
-				float strength = 2.0f;
+				float strength = 10.0f;
 				tmp.set(ent.getPosition()).sub(location).nor().scl(strength);
 				tmp.y = 0f;
 				ent.adjustVelocity(tmp);

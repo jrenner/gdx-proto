@@ -15,7 +15,7 @@ import org.jrenner.fps.Physics;
 import org.jrenner.fps.Player;
 import org.jrenner.fps.Tools;
 import org.jrenner.fps.effects.BlueExplosion;
-import org.jrenner.fps.graphics.EntityDecal;
+import org.jrenner.fps.graphics.EntityBillboard;
 import org.jrenner.fps.graphics.EntityModel;
 import org.jrenner.fps.move.FlyingMovement;
 import org.jrenner.fps.move.Movement;
@@ -45,7 +45,6 @@ public abstract class Entity {
 	protected int collisionPositionChangeCount = 0;
 
 	/** Entities have three choices for graphical representation: a 3d model, a billboard (decal), and none */
-	private EntityDecal entityDecal;
 	private EntityModel entityModel;
 
 	/** null for non-player entity */
@@ -63,7 +62,8 @@ public abstract class Entity {
 		}
 		switch(graphicsType) {
 			case Decal:
-				entityDecal = new EntityDecal(this);
+				//entityDecal = new EntityDecal(this);
+				entityModel = new EntityBillboard(this);
 				break;
 			case Model:
 				entityModel = new EntityModel(this);
@@ -134,7 +134,6 @@ public abstract class Entity {
 		idMap = new IntMap<>();
 		usedIDs = new Array<>();
 		DynamicEntity.list = new Array<>();
-		EntityDecal.list = new Array<>();
 		EntityModel.list = new Array<>();
 	}
 
@@ -325,6 +324,12 @@ public abstract class Entity {
 		getRotation().setEulerAngles(rot.x, rot.y, rot.z);
 	}
 
+	public void lookAt(Vector3 pos) {
+		tmp.set(pos).sub(getPosition());
+		q.setFromCross(Vector3.Z, tmp.nor());
+		setYawPitchRoll(q.getYaw(), getPitch(), getRoll());
+	}
+
 	public float getYaw() {
 		return rotation.getYaw();
 	}
@@ -416,9 +421,6 @@ public abstract class Entity {
 	protected void removeFromGame() {
 		synchronized (Entity.list) {
 			list.removeValue(this, true);
-		}
-		if (entityDecal != null) {
-			EntityDecal.list.removeValue(entityDecal, true);
 		}
 		if (entityModel != null) {
 			EntityModel.list.removeValue(entityModel, true);

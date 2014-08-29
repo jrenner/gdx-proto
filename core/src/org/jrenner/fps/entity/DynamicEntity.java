@@ -64,6 +64,7 @@ public class DynamicEntity extends Entity {
 		boolean testSimpleAI = true;
 		super.update(timeStep);
 		if (testSimpleAI && this.player == null) {
+			lookAt(Main.inst.client.player.entity.getPosition());
 			long now = TimeUtils.millis();
 			movement.cancelDestinationAtThreshold(3f);
 			if ((now - lastSetDestTime) >= nextDestInterval) {

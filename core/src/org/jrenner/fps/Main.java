@@ -65,7 +65,6 @@ public class Main extends ApplicationAdapter {
 			Gdx.input.setInputProcessor(inputMulti);
 		}
 		LevelBuilder.createLevel();
-		Box.createBoxes(20, 1, 10, 1, 10);
 
 		setupNetwork();
 	}

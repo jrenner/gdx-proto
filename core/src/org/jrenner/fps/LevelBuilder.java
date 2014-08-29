@@ -50,6 +50,7 @@ public class LevelBuilder {
 
 	public static void createLevel() {
 		// graphical representation of the ground
+		Log.debug("createLevel - create ground");
 		if (Main.isClient()) {
 			Model groundModel = Assets.manager.get("models/ground.g3db", Model.class);
 			ModelBuilder mb = new ModelBuilder();
@@ -60,19 +61,28 @@ public class LevelBuilder {
 			Vector3 tr = new Vector3();
 			Vector3 br = new Vector3();
 			Vector3 norm = new Vector3(0f, 1f, 0f);
-			int d = 4;
-			for (int x = -100; x < GameWorld.WORLD_WIDTH; x += d) {
+			// the size of each rect that makes up the ground
+			int rectSize = 25;
+			int rectCount = 0;
+			for (int x = -100; x < GameWorld.WORLD_WIDTH; x += rectSize) {
 				if (x % 20 == 0) {
 					mpb = mb.part("section-" + x, GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, groundModel.materials.first());
+					float u1 = 0f;
+					float v1 = 0f;
+					float u2 = rectSize / 5f;
+					float v2 = rectSize / 5f;
+					mpb.setUVRange(u1, v1, u2, v2);
 				}
-				for (int z = -100; z < GameWorld.WORLD_DEPTH; z += d) {
+				for (int z = -100; z < GameWorld.WORLD_DEPTH; z += rectSize) {
+					rectCount++;
 					bl.set(x, 0, z);
-					tl.set(x, 0, z + d);
-					tr.set(x + d, 0, z + d);
-					br.set(x + d, 0, z);
+					tl.set(x, 0, z + rectSize);
+					tr.set(x + rectSize, 0, z + rectSize);
+					br.set(x + rectSize, 0, z);
 					mpb.rect(bl, tl, tr, br, norm);
 				}
 			}
+			Log.debug("createLevel - created ground, rect count: " + rectCount);
 			Model finalModel = mb.end();
 			ground = new ModelInstance(finalModel);
 		}
@@ -85,9 +95,13 @@ public class LevelBuilder {
 		Physics.inst.addStaticGeometryToWorld(groundObj);
 
 		if (Main.isServer()) {
+			Log.debug("createLevel - create static models");
 			// server creates static models here, client will create the models when received from server upon connection
 			createStaticModels();
 		}
+
+		Log.debug("createLevel - create boxes");
+		Box.createBoxes(20, 1, 10, 1, 10);
 	}
 
 	/** client builds statics, probably based on info from server */
@@ -151,8 +165,8 @@ public class LevelBuilder {
 		float z = 0f;
 		int numOfStaticObjects = 20;
 		for (int i = 0; i < numOfStaticObjects; i++) {
-			x = MathUtils.random(10f, 200f);
-			z = MathUtils.random(10f, 200f);
+			x = MathUtils.random(10f, 100f);
+			z = MathUtils.random(10f, 100f);
 			quat.setEulerAngles(MathUtils.random(360f), MathUtils.random(360f), MathUtils.random(360f));
 			String modelName = modelChoices.random();
 			// bullet builds its physics shape using meshparts

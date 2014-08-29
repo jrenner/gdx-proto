@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
@@ -21,7 +19,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 import org.jrenner.fps.entity.Entity;
-import org.jrenner.fps.graphics.EntityDecal;
 import org.jrenner.fps.graphics.EntityModel;
 import org.jrenner.fps.graphics.ModelManager;
 import org.jrenner.fps.particles.Particles;
@@ -37,7 +34,6 @@ public class View implements Disposable {
 	public HUD hud;
 
 	private ModelBatch modelBatch;
-	private DecalBatch decalBatch;
 
 	private Color fogColor = new Color(0.5f, 0.55f, 0.5f, 1f);
 
@@ -67,7 +63,7 @@ public class View implements Disposable {
 
 	public View() {
 		ModelManager modelManager = new ModelManager();
-		modelManager.createPlayerModel();
+		modelManager.init();
 		storeSize();
 		inst = this;
 		gl = Gdx.graphics.getGL20();
@@ -79,7 +75,6 @@ public class View implements Disposable {
 
 		initShaders();
 		modelBatch = new ModelBatch(shaderProvider);
-		decalBatch = new DecalBatch(new CameraGroupStrategy(camera));
 
 		environ = new Environment();
 		camLight = new PointLight();
@@ -137,9 +132,14 @@ public class View implements Disposable {
 		if (Sky.isEnabled()) {
 			modelBatch.render(Sky.modelInstance);
 		}
+
+		// includes 3d models and billboards
 		for (EntityModel entityModel : EntityModel.list) {
 			entityModel.update();
-			modelBatch.render(entityModel.modelInstance, environ);
+			// don't draw self when in FPS mode
+			if (!entityModel.isClientEntity() || Toggleable.freeCamera()) {
+				modelBatch.render(entityModel.modelInstance, environ);
+			}
 		}
 		for (Shadow shadow : Shadow.list) {
 			modelBatch.render(shadow.modelInstance, environ);
@@ -148,23 +148,14 @@ public class View implements Disposable {
 			modelBatch.render(Box.instance, environ);
 		}
 		if (LevelBuilder.staticGeometry != null) {
-			for (ModelInstance gate : LevelBuilder.staticGeometry) {
-				modelBatch.render(gate, environ);
+			for (ModelInstance staticGeo : LevelBuilder.staticGeometry) {
+				modelBatch.render(staticGeo, environ);
 			}
 		}
 
 		if (LevelBuilder.ground != null) {
 			modelBatch.render(LevelBuilder.ground, environ);
 		}
-		modelBatch.end();
-
-		for (EntityDecal entityDecal: EntityDecal.list) {
-			entityDecal.update();
-			decalBatch.add(entityDecal.decal);
-		}
-		decalBatch.flush();
-
-		modelBatch.begin(camera);
 		drawParticleEffects();
 		modelBatch.end();
 
