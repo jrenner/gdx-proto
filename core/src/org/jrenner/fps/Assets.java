@@ -69,7 +69,7 @@ public class Assets {
 			manager.load("models/gate.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp1.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", HeadlessModel.class, modelParam);
-			manager.load("models/ground.g3db", HeadlessModel.class, modelParam);
+			manager.load("models/ground1.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/level.g3db", HeadlessModel.class, modelParam);
 		} else {
 			ModelLoader.ModelParameters modelParam = new ModelLoader.ModelParameters();
@@ -81,6 +81,7 @@ public class Assets {
 			manager.load("models/ground.g3db", Model.class, modelParam);
 			manager.load("models/level.g3db", Model.class, modelParam);
 			manager.load("models/skybox.g3db", Model.class, modelParam);
+			manager.load("models/terrain/terrain.g3db", Model.class, modelParam);
 		}
 
 		if (Main.isClient()) {
@@ -126,7 +127,7 @@ public class Assets {
 		textureParam.minFilter = TextureFilter.MipMapLinearLinear;
 		textureParam.wrapU = Texture.TextureWrap.Repeat;
 		textureParam.wrapV = Texture.TextureWrap.Repeat;
-		manager.load("models/ground1.jpg", Texture.class, textureParam);
+		manager.load("models/ground.jpg", Texture.class, textureParam);
 		manager.load("textures/marble.jpg", Texture.class, textureParam);
 		manager.load("textures/shadow.png", Texture.class);
 		

@@ -2,6 +2,7 @@ package org.jrenner.fps;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -12,10 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import static com.badlogic.gdx.graphics.VertexAttributes.Usage;
-
 /** blob shadow */
-// TODO make normal match the ground normal below the shadow
 public class Shadow {
 	private static Model model;
 	public ModelInstance modelInstance;
@@ -53,12 +51,12 @@ public class Shadow {
 	private float heightOffset = MathUtils.random(0.01f, 0.03f);
 
 	private static Vector3 tmp = new Vector3();
-
+	
 	public void update(Vector3 position) {
-		// TODO shadows should adapt the ground normal underneath
 		float height = Physics.inst.getShadowHeightAboveGround(position) - heightOffset;
 		tmp.set(position.x, position.y - height, position.z);
 		modelInstance.transform.setToTranslation(tmp);
+		modelInstance.transform.rotate(Vector3.Y, Physics.inst.raycastReport.hitNormal);
 	}
 
 	public void removeFromGame() {

@@ -152,10 +152,11 @@ public class View implements Disposable {
 				modelBatch.render(gate, environ);
 			}
 		}
-
-		if (LevelBuilder.ground != null) {
-			modelBatch.render(LevelBuilder.ground, environ);
+		for (TerrainChunk terrain : Terrain.chunks) {
+			if (terrain != null && terrain.modelInstance != null)
+				modelBatch.render(terrain.modelInstance, environ);
 		}
+		
 		modelBatch.end();
 
 		for (EntityDecal entityDecal: EntityDecal.list) {
@@ -163,6 +164,7 @@ public class View implements Disposable {
 			decalBatch.add(entityDecal.decal);
 		}
 		decalBatch.flush();
+		
 
 		modelBatch.begin(camera);
 		drawParticleEffects();
@@ -182,7 +184,7 @@ public class View implements Disposable {
 	private void drawParticleEffects() {
 		Particles.inst.system.update();
 		Particles.inst.system.begin();
-		Particles.inst.system.draw();
+		Particles.inst.system.updateAndDraw();
 		Particles.inst.system.end();
 		modelBatch.render(Particles.inst.system);
 	}

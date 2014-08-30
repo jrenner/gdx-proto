@@ -1,16 +1,11 @@
 package org.jrenner.fps;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.Material;
+import org.jrenner.fps.headless.HeadlessModel;
+
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -19,13 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btBvhTriangleMeshShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
-import com.badlogic.gdx.physics.bullet.collision.btStaticPlaneShape;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.jrenner.fps.headless.HeadlessModel;
-
-import static com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import static com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 
 public class LevelBuilder {
 	public static LevelBuilder inst;
@@ -46,44 +35,11 @@ public class LevelBuilder {
 
 	public static Array<ModelInstance> staticGeometry;
 
-	public static ModelInstance ground;
-
 	public static void createLevel() {
-		// graphical representation of the ground
-		if (Main.isClient()) {
-			Model groundModel = Assets.manager.get("models/ground.g3db", Model.class);
-			ModelBuilder mb = new ModelBuilder();
-			mb.begin();
-			MeshPartBuilder mpb = mb.part("first", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, groundModel.materials.first());
-			Vector3 bl = new Vector3();
-			Vector3 tl = new Vector3();
-			Vector3 tr = new Vector3();
-			Vector3 br = new Vector3();
-			Vector3 norm = new Vector3(0f, 1f, 0f);
-			int d = 4;
-			for (int x = -100; x < GameWorld.WORLD_WIDTH; x += d) {
-				if (x % 20 == 0) {
-					mpb = mb.part("section-" + x, GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, groundModel.materials.first());
-				}
-				for (int z = -100; z < GameWorld.WORLD_DEPTH; z += d) {
-					bl.set(x, 0, z);
-					tl.set(x, 0, z + d);
-					tr.set(x + d, 0, z + d);
-					br.set(x + d, 0, z);
-					mpb.rect(bl, tl, tr, br, norm);
-				}
-			}
-			Model finalModel = mb.end();
-			ground = new ModelInstance(finalModel);
-		}
-
-		// physical representation of the ground
-		btCollisionObject groundObj = new btCollisionObject();
-		btCollisionShape groundShape = new btStaticPlaneShape(Vector3.Y, 0f);
-		groundObj.setCollisionShape(groundShape);
-		Physics.applyStaticGeometryCollisionFlags(groundObj);
-		Physics.inst.addStaticGeometryToWorld(groundObj);
-
+		//Terrain.createPlaneTerrain();
+		TerrainChunk chunk = Terrain.createMeshTerrain(Assets.manager.get("models/terrain/terrain.g3db", Model.class));
+		Terrain.setChunk(chunk, 0, 0, null);
+		
 		if (Main.isServer()) {
 			// server creates static models here, client will create the models when received from server upon connection
 			createStaticModels();

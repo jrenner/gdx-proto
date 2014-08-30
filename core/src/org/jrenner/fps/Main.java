@@ -6,9 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
+
 import org.jrenner.fps.effects.BulletHit;
 import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.event.ClientEventManager;
+import org.jrenner.fps.graphics.EntityDecal;
 import org.jrenner.fps.input.GestureHandler;
 import org.jrenner.fps.input.Input;
 import org.jrenner.fps.move.Movement;
@@ -179,6 +181,7 @@ public class Main extends ApplicationAdapter {
 			Toggleable.init();
 		}
 		LevelBuilder.init();
+		Terrain.init();
 		Block.init();
 		if (isClient()) {
 			Shadow.init();
