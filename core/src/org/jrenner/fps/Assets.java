@@ -69,6 +69,7 @@ public class Assets {
 			manager.load("models/gate.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp1.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", HeadlessModel.class, modelParam);
+			manager.load("models/mount.g3db", HeadlessModel.class, modelParam);
 		} else {
 			ModelLoader.ModelParameters modelParam = new ModelLoader.ModelParameters();
 			modelParam.textureParameter = modTexParam;
@@ -77,6 +78,7 @@ public class Assets {
 			manager.load("models/strange-ramp1.g3db", Model.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", Model.class, modelParam);
 			manager.load("models/skybox.g3db", Model.class, modelParam);
+			manager.load("models/mount.g3db", Model.class, modelParam);
 		}
 
 		if (Main.isClient()) {
@@ -127,12 +129,16 @@ public class Assets {
 		manager.load("textures/shadow.png", Texture.class, textureParam);
 		
 		//Load Skybox
-		manager.load("textures/skybox/xpos.png", Texture.class);
-		manager.load("textures/skybox/xneg.png", Texture.class);
-		manager.load("textures/skybox/ypos.png", Texture.class);
-		manager.load("textures/skybox/yneg.png", Texture.class);
-		manager.load("textures/skybox/zpos.png", Texture.class);
-		manager.load("textures/skybox/zneg.png", Texture.class);
+		TextureParameter skyBoxParam = new TextureParameter();
+		textureParam.genMipMaps = false;
+		textureParam.magFilter = TextureFilter.Linear;
+		textureParam.minFilter = TextureFilter.Linear;
+		manager.load("textures/skybox/xpos.png", Texture.class, skyBoxParam);
+		manager.load("textures/skybox/xneg.png", Texture.class, skyBoxParam);
+		manager.load("textures/skybox/ypos.png", Texture.class, skyBoxParam);
+		manager.load("textures/skybox/yneg.png", Texture.class, skyBoxParam);
+		manager.load("textures/skybox/zpos.png", Texture.class, skyBoxParam);
+		manager.load("textures/skybox/zneg.png", Texture.class, skyBoxParam);
 
 
 		// load Texture Atlas

@@ -1,16 +1,13 @@
 package org.jrenner.fps;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.Material;
+import org.jrenner.fps.headless.HeadlessModel;
+import org.jrenner.fps.terrain.Terrain;
+import org.jrenner.fps.terrain.TerrainChunk;
+
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -19,13 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btBvhTriangleMeshShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
-import com.badlogic.gdx.physics.bullet.collision.btStaticPlaneShape;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.jrenner.fps.headless.HeadlessModel;
-
-import static com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import static com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 
 public class LevelBuilder {
 	public static LevelBuilder inst;
@@ -36,7 +27,6 @@ public class LevelBuilder {
 
 	public static void init() {
 		staticPieces = new Array<>();
-		groundPieces = new Array<>();
 		mb = new ModelBuilder();
 		models = new Array<>();
 	}
@@ -47,58 +37,11 @@ public class LevelBuilder {
 
 	public static Array<ModelInstance> staticGeometry;
 
-	public static Array<ModelInstance> groundPieces;
-	public static final float groundPieceSize = 16f;
-
 	public static void createLevel() {
-		// graphical representation of the ground
-		Log.debug("createLevel - create ground");
-		if (Main.isClient()) {
-			ModelBuilder mb = new ModelBuilder();
-			mb.begin();
-			Vector3 bl = new Vector3();
-			Vector3 tl = new Vector3();
-			Vector3 tr = new Vector3();
-			Vector3 br = new Vector3();
-			Vector3 norm = new Vector3(0f, 1f, 0f);
-			// the size of each rect that makes up the ground
-			Texture groundTex = Assets.manager.get("textures/ground1.jpg", Texture.class);
-			Material groundMat = new Material(TextureAttribute.createDiffuse(groundTex));
-			MeshPartBuilder mpb = mb.part("ground", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, groundMat);
-			float u1 = 0f;
-			float v1 = 0f;
-			float u2 = groundPieceSize / 5f;
-			float v2 = groundPieceSize / 5f;
-			mpb.setUVRange(u1, v1, u2, v2);
-			bl.set(0, 0, 0);
-			tl.set(0, 0, groundPieceSize);
-			tr.set(groundPieceSize, 0, groundPieceSize);
-			br.set(groundPieceSize, 0, 0);
-			//mpb.rect(bl, tl, tr, br, norm);
-			int divisions = ((int) groundPieceSize) / 4;
-			mpb.patch(bl, tl, tr, br, norm, divisions, divisions);
-			Model groundModel = mb.end();
-			models.add(groundModel);
-			groundPieces.clear();
-			int count = 0;
-			for (int x = 0; x < GameWorld.WORLD_WIDTH; x += groundPieceSize) {
-				for (int z = 0; z < GameWorld.WORLD_DEPTH; z += groundPieceSize) {
-					count++;
-					ModelInstance groundPiece = new ModelInstance(groundModel);
-					groundPiece.transform.setToTranslation(x, 0f, z);
-					groundPieces.add(groundPiece);
-				}
-			}
-			Log.debug("createLevel - created " + count + " groundPieces");
-		}
-
-		// physical representation of the ground
-		btCollisionObject groundObj = new btCollisionObject();
-		btCollisionShape groundShape = new btStaticPlaneShape(Vector3.Y, 0f);
-		groundObj.setCollisionShape(groundShape);
-		Physics.applyStaticGeometryCollisionFlags(groundObj);
-		Physics.inst.addStaticGeometryToWorld(groundObj);
-
+		// Create a terrain
+		TerrainChunk chunk = Terrain.CreateMeshChunk(Assets.manager.get("models/mount.g3db", Model.class));
+		Terrain.addChunk(chunk, -50, -50);
+		
 		if (Main.isServer()) {
 			Log.debug("createLevel - create static models");
 			// server creates static models here, client will create the models when received from server upon connection

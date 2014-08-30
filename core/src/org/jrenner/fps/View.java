@@ -22,6 +22,8 @@ import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.graphics.EntityModel;
 import org.jrenner.fps.graphics.ModelManager;
 import org.jrenner.fps.particles.Particles;
+import org.jrenner.fps.terrain.Terrain;
+import org.jrenner.fps.terrain.TerrainChunk;
 
 public class View implements Disposable {
 	public static View inst;
@@ -69,7 +71,7 @@ public class View implements Disposable {
 		gl = Gdx.graphics.getGL20();
 		float fov = 67f;
 		camera = new PerspectiveCamera(fov, width(), height());
-		camera.far = 50f;
+		camera.far = 200f;
 		camera.near = 0.01f;
 		resetCamera();
 
@@ -128,11 +130,23 @@ public class View implements Disposable {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		camera.up.set(Vector3.Y);
 		updateCamera();
-		updateSky();
 
 		modelBatch.begin(camera);
 		if (Sky.isEnabled()) {
+			Sky.update(camera.position);
 			modelBatch.render(Sky.modelInstance);
+		}
+		
+		if (Terrain.chunks != null) {
+			for (TerrainChunk chunk : Terrain.chunks) {
+				chunk.render(modelBatch, environ);
+			}
+		}
+		
+		if (LevelBuilder.staticGeometry != null) {
+			for (ModelInstance staticGeo : LevelBuilder.staticGeometry) {
+				modelBatch.render(staticGeo, environ);
+			}
 		}
 
 		// includes 3d models and billboards
@@ -152,6 +166,7 @@ public class View implements Disposable {
 			}
 		}
 
+		/*
 		totalGroundPieces = 0;
 		visibleGroundPieces = 0;
 		for (ModelInstance groundPiece : LevelBuilder.groundPieces) {
@@ -161,6 +176,7 @@ public class View implements Disposable {
 				modelBatch.render(groundPiece, environ);
 			}
 		}
+		*/
 		modelBatch.end();
 
 		// draw particle effects in a separate batch to make depth testing work correctly
@@ -188,12 +204,6 @@ public class View implements Disposable {
 		Particles.inst.system.draw();
 		Particles.inst.system.end();
 		modelBatch.render(Particles.inst.system);
-	}
-	
-	private void updateSky() {
-		if (Sky.isEnabled()) {
-			Sky.update(camera.position);
-		}
 	}
 	
 	private void updateLights() {
@@ -287,6 +297,7 @@ public class View implements Disposable {
 		height = Gdx.graphics.getHeight();
 	}
 
+	/*
 	public static int totalGroundPieces;
 	public static int visibleGroundPieces;
 	private boolean groundPieceVisibilityCheck(ModelInstance modelInst) {
@@ -298,6 +309,7 @@ public class View implements Disposable {
 		// this naive method is useful for debugging to see pop-in/pop-out
 		//return camera.frustum.pointInFrustum(tmp);
 	}
+	*/
 
 	@Override
 	public void dispose() {

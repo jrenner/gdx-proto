@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
+
 import org.jrenner.fps.effects.BulletHit;
 import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.event.ClientEventManager;
@@ -21,6 +22,7 @@ import org.jrenner.fps.net.client.AbstractClient;
 import org.jrenner.fps.net.client.LocalClient;
 import org.jrenner.fps.net.client.NetClient;
 import org.jrenner.fps.particles.Particles;
+import org.jrenner.fps.terrain.Terrain;
 import org.jrenner.fps.utils.Pooler;
 
 public class Main extends ApplicationAdapter {
@@ -180,6 +182,7 @@ public class Main extends ApplicationAdapter {
 			Toggleable.init();
 		}
 		LevelBuilder.init();
+		Terrain.init();
 		Block.init();
 		if (isClient()) {
 			Shadow.init();
