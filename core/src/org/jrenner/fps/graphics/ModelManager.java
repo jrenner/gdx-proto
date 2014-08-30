@@ -67,7 +67,7 @@ public class ModelManager {
 		ModelBuilder mb = new ModelBuilder();
 		mb.begin();
 
-		long attr = Usage.TextureCoordinates | Usage.Position;
+		long attr = Usage.TextureCoordinates | Usage.Position | Usage.Normal;
 		TextureRegion region = Assets.getAtlas().findRegion("sprites/test-guy");
 		Material mat = new Material(TextureAttribute.createDiffuse(region.getTexture()));
 		boolean blended = true;

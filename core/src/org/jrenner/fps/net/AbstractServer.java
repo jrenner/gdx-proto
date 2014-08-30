@@ -141,9 +141,11 @@ public abstract class AbstractServer {
 		processBulletHits();
 	}
 
+	private static final float monsterCount = 8;
+
 	private void maintainMonsterCount() {
 		synchronized (Entity.list) {
-			if (Entity.list.size < 20) {
+			if (Entity.list.size < monsterCount) {
 				serverEventManager.addEventToQueue(new ServerEvent.CreateMonster());
 			}
 		}
@@ -192,12 +194,6 @@ public abstract class AbstractServer {
 		chat.playerId = -1;
 		chat.createTime = TimeUtils.millis();
 		queueChatMessage(chat);
-	}
-
-	public void setupGame() {
-		for (int i = 0; i < 10; i++) {
-			createMonster();
-		}
 	}
 
 	public void createMonster() {

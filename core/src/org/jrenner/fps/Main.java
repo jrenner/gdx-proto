@@ -76,9 +76,6 @@ public class Main extends ApplicationAdapter {
 		} else if (isLocalServer()) {
 			server = new LocalServer();
 		}
-		if (isServer()) {
-			server.setupGame();
-		}
 		if (isClient()) {
 			clientEventManager = new ClientEventManager();
 			if (isLocalServer()) {

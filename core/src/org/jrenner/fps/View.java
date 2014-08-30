@@ -18,9 +18,11 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
+import com.badlogic.gdx.utils.TimeUtils;
 import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.graphics.EntityModel;
 import org.jrenner.fps.graphics.ModelManager;
+import org.jrenner.fps.net.packages.ChatMessage;
 import org.jrenner.fps.particles.Particles;
 
 public class View implements Disposable {
@@ -28,7 +30,7 @@ public class View implements Disposable {
 	private GL20 gl;
 	public static int width, height;
 	private PerspectiveCamera camera;
-	private Environment environ;
+	private Environment environ, basicEnviron;
 	private PointLight camLight;
 	private DirectionalLight dirLight;
 	public HUD hud;
@@ -39,8 +41,6 @@ public class View implements Disposable {
 
 	private DefaultShaderProvider shaderProvider;
 
-	private static final int MAX_POINTLIGHTS = 1;
-	private static final int MAX_DIRECTIONAL_LIGHTS = 2;
 
 	private void initShaders() {
 		FileHandle vertexFile = Gdx.files.internal("shaders/vertex.glsl");
@@ -51,7 +51,8 @@ public class View implements Disposable {
 		shaderProvider.config.numDirectionalLights = 2;
 
 
-		// I don't remember what I was doing with this but it seems like it could be useful later
+		// check shader compile logs
+
 		/*shader = new ShaderProgram(vertexFile, fragFile);
 		ShaderProgram.pedantic = false;
 		String log = shader.getLog();
@@ -69,7 +70,8 @@ public class View implements Disposable {
 		gl = Gdx.graphics.getGL20();
 		float fov = 67f;
 		camera = new PerspectiveCamera(fov, width(), height());
-		camera.far = 50f;
+		// camera.far affects frustrum culling, so a shorter distance can boost performance
+		camera.far = 60f;
 		camera.near = 0.01f;
 		resetCamera();
 
@@ -77,10 +79,11 @@ public class View implements Disposable {
 		modelBatch = new ModelBatch(shaderProvider);
 
 		environ = new Environment();
+		basicEnviron = new Environment();
 		camLight = new PointLight();
 		float intensity = 100f;
 		camLight.set(new Color(0.2f, 0.2f, 0.2f, 1f), 0f, 0f, 0f, intensity);
-		ColorAttribute ambientLight = new ColorAttribute(ColorAttribute.AmbientLight, new Color(0.1f, 0.1f, 0.1f, 1f));
+		ColorAttribute ambientLight = ColorAttribute.createAmbient(new Color(0.1f, 0.1f, 0.1f, 1f));
 		environ.set(ambientLight);
 		ColorAttribute fog = new ColorAttribute(ColorAttribute.Fog);
 		fog.color.set(fogColor);
@@ -89,6 +92,8 @@ public class View implements Disposable {
 		dirLight = new DirectionalLight();
 		dirLight.set(new Color(0.3f, 0.3f, 0.35f, 1f), -0.25f, -0.75f, 0.25f);
 		environ.add(dirLight);
+
+		basicEnviron.set(ColorAttribute.createAmbient(0.3f, 0.3f, 0.3f, 1f));
 
 		if (Toggleable.profileGL()) {
 			Profiler.enable();
@@ -117,7 +122,50 @@ public class View implements Disposable {
 		camera.update();
 	}
 
+	long lastSwitch = -1;
+	RollingArray renderTimes = new RollingArray();
+	RollingArray hudTimes = new RollingArray();
+	RollingArray entityTimes = new RollingArray();
+	RollingArray staticTimes = new RollingArray();
+	RollingArray boxTimes = new RollingArray();
+	RollingArray skyTimes = new RollingArray();
+	RollingArray groundTimes = new RollingArray();
+
+	private void debugRenderTimes() {
+		// tied in with the profileGL toggleable for now
+		long now = TimeUtils.millis();
+		long passed = now - lastSwitch;
+		if (passed >= 1000 || lastSwitch < 0) {
+			float totalTime = renderTimes.getAverage();
+			float hudTime = hudTimes.getAverage();
+			float entityTime = entityTimes.getAverage();
+			float staticTime = staticTimes.getAverage();
+			float boxTime = boxTimes.getAverage();
+			float skyTime = skyTimes.getAverage();
+			float groundTime = groundTimes.getAverage();
+			renderTimes.clear();
+			hudTimes.clear();
+			entityTimes.clear();
+			staticTimes.clear();
+			boxTimes.clear();
+			skyTimes.clear();
+			groundTimes.clear();
+			lastSwitch = now;
+			String text = String.format("render-times(ms), total: %.1f, hud: %.1f, entity: %.1f, static: %.1f\n" +
+					"            boxes: %.1f, sky: %.1f, ground: %.1f",
+					totalTime, hudTime, entityTime, staticTime, boxTime, skyTime, groundTime);
+			Main.inst.client.sendChatMessage(new ChatMessage(text));
+			Log.debug(text);
+		}
+	}
+
+	boolean debugRenderPerformance = false;
+
 	public void render() {
+		if (debugRenderPerformance) {
+			debugRenderTimes();
+		}
+		long start = TimeUtils.millis();
 		boolean profileGL = Toggleable.profileGL();
 		updateLights();
 		if (profileGL) {
@@ -128,42 +176,56 @@ public class View implements Disposable {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		camera.up.set(Vector3.Y);
 		updateCamera();
-		updateSky();
 
+		long skyStart = TimeUtils.millis();
+		updateSky();
 		modelBatch.begin(camera);
 		if (Sky.isEnabled()) {
 			modelBatch.render(Sky.modelInstance);
 		}
+		skyTimes.add((int) TimeUtils.timeSinceMillis(skyStart));
 
 		// includes 3d models and billboards
+		long entityStart = TimeUtils.millis();
+		visibleEntities = 0;
 		for (EntityModel entityModel : EntityModel.list) {
 			entityModel.update();
 			// don't draw self when in FPS mode
 			if (!entityModel.isClientEntity() || Toggleable.freeCamera()) {
-				modelBatch.render(entityModel.modelInstance, environ);
+				if (entityVisibilityCheck(entityModel)) {
+					visibleEntities++;
+					modelBatch.render(entityModel.modelInstance, environ);
+				}
 			}
 		}
+		entityTimes.add((int) TimeUtils.timeSinceMillis(entityStart));
+
+		long boxStart = TimeUtils.millis();
 		if (Box.instance != null) {
 			modelBatch.render(Box.instance, environ);
 		}
+		boxTimes.add((int) TimeUtils.timeSinceMillis(boxStart));
+
+		long staticStart = TimeUtils.millis();
 		if (LevelBuilder.staticGeometry != null) {
 			for (ModelInstance staticGeo : LevelBuilder.staticGeometry) {
 				modelBatch.render(staticGeo, environ);
 			}
 		}
+		staticTimes.add((int) TimeUtils.timeSinceMillis(staticStart));
 
-		totalGroundPieces = 0;
+		long groundStart = TimeUtils.millis();
 		visibleGroundPieces = 0;
 		for (ModelInstance groundPiece : LevelBuilder.groundPieces) {
-			totalGroundPieces++;
 			if (groundPieceVisibilityCheck(groundPiece)) {
 				visibleGroundPieces++;
 				modelBatch.render(groundPiece, environ);
 			}
 		}
+		groundTimes.add((int) TimeUtils.timeSinceMillis(groundStart));
 		modelBatch.end();
 
-		// draw particle effects in a separate batch to make depth testing work correctly
+		// draw particle effects in a separate batch to make depth testing work better
 		modelBatch.begin(camera);
 		for (Shadow shadow : Shadow.list) {
 			modelBatch.render(shadow.modelInstance, environ);
@@ -179,7 +241,13 @@ public class View implements Disposable {
 			Physics.inst.debugDraw();
 		}
 
+		long hudStart = TimeUtils.millis();
 		hud.draw();
+		long hudTime = TimeUtils.timeSinceMillis(hudStart);
+		hudTimes.add((int) hudTime);
+
+		long time = TimeUtils.timeSinceMillis(start);
+		renderTimes.add((int) time);
 	}
 
 	private void drawParticleEffects() {
@@ -287,16 +355,23 @@ public class View implements Disposable {
 		height = Gdx.graphics.getHeight();
 	}
 
-	public static int totalGroundPieces;
 	public static int visibleGroundPieces;
 	private boolean groundPieceVisibilityCheck(ModelInstance modelInst) {
 		float halfWidth = LevelBuilder.groundPieceSize / 2f;
 		modelInst.transform.getTranslation(tmp);
 		// we want the center of the piece
 		tmp.add(halfWidth, 0, halfWidth);
+		float radius = LevelBuilder.groundPieceSize;
 		return camera.frustum.sphereInFrustum(tmp, LevelBuilder.groundPieceSize);
 		// this naive method is useful for debugging to see pop-in/pop-out
 		//return camera.frustum.pointInFrustum(tmp);
+	}
+
+	public static int visibleEntities;
+	private boolean entityVisibilityCheck(EntityModel entModel) {
+		entModel.modelInstance.transform.getTranslation(tmp);
+		float radius = entModel.entity.getRadius();
+		return camera.frustum.sphereInFrustum(tmp, radius);
 	}
 
 	@Override
