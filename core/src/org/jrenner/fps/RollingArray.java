@@ -4,6 +4,15 @@ import com.badlogic.gdx.utils.Array;
 
 /** An Array that will automatically remove oldest items when beyond max size */
 public class RollingArray {
+
+	public RollingArray() {
+
+	}
+
+	public RollingArray(int maxSize) {
+		this.maxSize = maxSize;
+	}
+
 	Array<Integer> items = new Array<>();
 	public int maxSize = 60;
 

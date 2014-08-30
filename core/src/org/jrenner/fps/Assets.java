@@ -104,7 +104,7 @@ public class Assets {
 			// Skin changes
 			skin.get(Label.LabelStyle.class).font = font;
 			chatLabelStyle = new Label.LabelStyle(skin.get(Label.LabelStyle.class));
-			chatLabelStyle.font = largeFont;
+			chatLabelStyle.font = font;
 			skin.get(TextButton.TextButtonStyle.class).font = largeFont;
 			TextField.TextFieldStyle tfStyle = skin.get(TextField.TextFieldStyle.class);
 			tfStyle.background = skin.getDrawable("button-up");
@@ -127,19 +127,19 @@ public class Assets {
 		manager.load("textures/ground1.jpg", Texture.class, textureParam);
 		manager.load("textures/marble.jpg", Texture.class, textureParam);
 		manager.load("textures/shadow.png", Texture.class, textureParam);
+
+		TextureParameter skyTextureParam = new TextureParameter();
+		skyTextureParam.genMipMaps = false;
+		skyTextureParam.magFilter = TextureFilter.Linear;
+		skyTextureParam.minFilter = TextureFilter.Linear;
 		
 		//Load Skybox
-		TextureParameter skyBoxParam = new TextureParameter();
-		textureParam.genMipMaps = false;
-		textureParam.magFilter = TextureFilter.Linear;
-		textureParam.minFilter = TextureFilter.Linear;
-		manager.load("textures/skybox/xpos.png", Texture.class, skyBoxParam);
-		manager.load("textures/skybox/xneg.png", Texture.class, skyBoxParam);
-		manager.load("textures/skybox/ypos.png", Texture.class, skyBoxParam);
-		manager.load("textures/skybox/yneg.png", Texture.class, skyBoxParam);
-		manager.load("textures/skybox/zpos.png", Texture.class, skyBoxParam);
-		manager.load("textures/skybox/zneg.png", Texture.class, skyBoxParam);
-
+		manager.load("textures/skybox/xpos.png", Texture.class, skyTextureParam);
+		manager.load("textures/skybox/xneg.png", Texture.class, skyTextureParam);
+		manager.load("textures/skybox/ypos.png", Texture.class, skyTextureParam);
+		manager.load("textures/skybox/yneg.png", Texture.class, skyTextureParam);
+		manager.load("textures/skybox/zpos.png", Texture.class, skyTextureParam);
+		manager.load("textures/skybox/zneg.png", Texture.class, skyTextureParam);
 
 		// load Texture Atlas
 		manager.load("texture-packs/texture-pack.atlas", TextureAtlas.class);

@@ -119,7 +119,7 @@ public class DynamicEntity extends Entity {
 	private int ticksPerShot = 6;
 	private int tickCountdown;
 	private boolean shooting;
-	private float aimError = 0.035f;
+	private float aimError = 0.025f;
 
 	public void startShoot() {
 		shooting = true;

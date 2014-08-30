@@ -1,7 +1,7 @@
 
 package org.jrenner.fps;
 
-import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.math.Quaternion;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -72,10 +72,17 @@ public class Sky {
 	}
 
 	private static final Vector3 tmp = new Vector3();
+	private static final Quaternion q = new Quaternion();
+	public static float yawRotation = 0f;
+	public static float yawRotateSpeed = 0.01f;
 
 	public static void update (Vector3 position) {
 		tmp.set(position.x, position.y, position.z);
-		modelInstance.transform.setToTranslation(tmp);
+		modelInstance.transform.getRotation(q);
+		yawRotation += yawRotateSpeed;
+		q.setFromAxis(Vector3.Y, yawRotation);
+		modelInstance.transform.set(q);
+		modelInstance.transform.setTranslation(tmp);
 	}
 
 	public static void disable () {

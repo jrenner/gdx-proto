@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.TimeUtils;
+import org.jrenner.fps.entity.Entity;
 import org.jrenner.fps.net.NetManager;
 import org.jrenner.fps.net.packages.ChatMessage;
 
@@ -146,7 +147,7 @@ public class HUD {
 	boolean debugHUD = true;
 
 	public void update() {
-		//if (Main.frame % 10 != 0) return;
+		if (Main.frame % 15 != 0) return;
 		Player player = Main.inst.client.player;
 		sb.delete(0, sb.length);
 		sb.append("FPS: ").append(Integer.toString(Gdx.graphics.getFramesPerSecond()));
@@ -181,6 +182,8 @@ public class HUD {
 			sb.append("\nGround dist: ").append(String.format("%.4f", player.entity.distFromGround));
 			sb.append("\nGround normal: ").append(Tools.fmt(Physics.inst.getFloorNormal(player.entity.getPosition())));
 			//sb.append("\nGroundPiece visibility: ").append(View.visibleGroundPieces).append(" / ").append(View.totalGroundPieces);
+			//sb.append("\nGroundPiece visibility: ").append(View.visibleGroundPieces).append(" / ").append(LevelBuilder.groundPieces.size);
+			sb.append("\nEntity visibility: ").append(View.visibleEntities).append(" / ").append(Entity.list.size);
 		}
 		sb.append("\nPress T to chat\nPress R to respawn");
 		label.setText(sb.toString());

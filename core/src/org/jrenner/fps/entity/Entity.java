@@ -1,5 +1,6 @@
 package org.jrenner.fps.entity;
 
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
@@ -459,6 +460,27 @@ public abstract class Entity {
 		} else {
 			distFromGround = Physics.inst.distanceFromGround(movement.getPosition(), dimen);
 		}
+	}
+
+	public EntityModel getEntityModel() {
+		return entityModel;
+	}
+
+	public float getHeight() {
+		return dimen.y;
+	}
+
+	public float getWidth() {
+		return dimen.x;
+	}
+
+	public float getDepth() {
+		return dimen.z;
+	}
+
+	// TODO make this more accurate
+	public float getRadius() {
+		return Math.max(dimen.z, (Math.max(dimen.x, dimen.y)));
 	}
 
 }

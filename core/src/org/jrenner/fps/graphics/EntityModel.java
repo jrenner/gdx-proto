@@ -9,7 +9,7 @@ import org.jrenner.fps.entity.Entity;
 /** 3d model graphical representation of an Entity */
 public class EntityModel {
 	public static Array<EntityModel> list;
-	protected Entity entity;
+	public Entity entity;
 	public ModelInstance modelInstance;
 
 	protected static Matrix4 mtx = new Matrix4();

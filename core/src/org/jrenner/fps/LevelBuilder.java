@@ -45,7 +45,7 @@ public class LevelBuilder {
 		if (Main.isServer()) {
 			Log.debug("createLevel - create static models");
 			// server creates static models here, client will create the models when received from server upon connection
-			createStaticModels();
+			createStaticModels(25);
 		}
 
 		Log.debug("createLevel - create boxes");
@@ -92,7 +92,7 @@ public class LevelBuilder {
 		Physics.inst.addStaticGeometryToWorld(obj);
 	}
 
-	private static void createStaticModels() {
+	private static void createStaticModels(int number) {
 		staticGeometry = new Array<>();
 		if (Main.isClient()) {
 			mb = new ModelBuilder();
@@ -111,10 +111,9 @@ public class LevelBuilder {
 		//float hi = GameWorld.WORLD_WIDTH;
 		float x = 20f;
 		float z = 0f;
-		int numOfStaticObjects = 8;
-		for (int i = 0; i < numOfStaticObjects; i++) {
-			x = MathUtils.random(10f, 100f);
-			z = MathUtils.random(10f, 100f);
+		for (int i = 0; i < number; i++) {
+			x = MathUtils.random(GameWorld.WORLD_WIDTH);
+			z = MathUtils.random(GameWorld.WORLD_DEPTH);
 			quat.setEulerAngles(MathUtils.random(360f), MathUtils.random(360f), MathUtils.random(360f));
 			String modelName = modelChoices.random();
 			// bullet builds its physics shape using meshparts
