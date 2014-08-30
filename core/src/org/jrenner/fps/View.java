@@ -85,7 +85,7 @@ public class View implements Disposable {
 		camLight = new PointLight();
 		float intensity = 100f;
 		camLight.set(new Color(0.2f, 0.2f, 0.2f, 1f), 0f, 0f, 0f, intensity);
-		ColorAttribute ambientLight = ColorAttribute.createAmbient(new Color(0.1f, 0.1f, 0.1f, 1f));
+		ColorAttribute ambientLight = new ColorAttribute(ColorAttribute.AmbientLight, .1f , .1f, .1f ,1);
 		environ.set(ambientLight);
 		ColorAttribute fog = new ColorAttribute(ColorAttribute.Fog);
 		fog.color.set(fogColor);
