@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -27,7 +28,7 @@ public class Box {
 
 
 	/** create some boxes to fill the level with some test geometry */
-	public static void createBoxes(int count, int minW, int maxW, int minH, int maxH) {
+	public static void createBoxes(int count) {
 		ModelBuilder main = new ModelBuilder();
 		ModelBuilder mb = new ModelBuilder();
 		Material material = new Material();
@@ -50,10 +51,11 @@ public class Box {
 				Model boxModel = mb.end();
 				Node node = main.node("box-" + i, boxModel);
 				node.translation.set(tmp);
+				q.idt();
+				node.rotation.set(q);
 			}
 			//node.translation.set(MathUtils.random(x), 0f, MathUtils.random(y));
 			//q.set(Vector3.X, -90);
-			q.idt();
 			mtx.set(q);
 			mtx.setTranslation(tmp);
 			btCollisionObject obj = Physics.inst.createBoxObject(tmp.set(w/2, h/2, d/2));

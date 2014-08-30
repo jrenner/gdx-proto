@@ -19,6 +19,7 @@ public class Shadow {
 	private static Model model;
 	public ModelInstance modelInstance;
 	public static Array<Shadow> list;
+	private float height;
 
 	public static void init() {
 		list = new Array<>();
@@ -54,7 +55,12 @@ public class Shadow {
 	private static Vector3 tmp = new Vector3();
 
 	public void update(Vector3 position) {
-		float height = Physics.inst.getShadowHeightAboveGround(position) - heightOffset;
+		// optimize for Mobile
+		if (Main.isMobile() && Main.frame % 6 != 0) {
+			// don't update height
+		} else {
+			height = Physics.inst.getShadowHeightAboveGround(position) - heightOffset;
+		}
 		tmp.set(position.x, position.y - height, position.z);
 		modelInstance.transform.setToTranslation(tmp);
 		modelInstance.transform.rotate(Vector3.Y, Physics.inst.raycastReport.hitNormal);

@@ -35,7 +35,7 @@ public class View implements Disposable {
 
 	private ModelBatch modelBatch;
 
-	private Color fogColor = new Color(0.5f, 0.55f, 0.5f, 1f);
+	private Color fogColor = new Color(0.3f, 0.4f, 0.3f, 1f);
 
 	private DefaultShaderProvider shaderProvider;
 
@@ -69,8 +69,8 @@ public class View implements Disposable {
 		gl = Gdx.graphics.getGL20();
 		float fov = 67f;
 		camera = new PerspectiveCamera(fov, width(), height());
-		camera.far = 200f;
-		camera.near = 0.1f;
+		camera.far = 50f;
+		camera.near = 0.01f;
 		resetCamera();
 
 		initShaders();
@@ -89,9 +89,11 @@ public class View implements Disposable {
 		dirLight = new DirectionalLight();
 		dirLight.set(new Color(0.3f, 0.3f, 0.35f, 1f), -0.25f, -0.75f, 0.25f);
 		environ.add(dirLight);
+
 		if (Toggleable.profileGL()) {
 			Profiler.enable();
 		}
+
 		hud = new HUD();
 		
 		Sky.createSkyBox(
@@ -141,9 +143,6 @@ public class View implements Disposable {
 				modelBatch.render(entityModel.modelInstance, environ);
 			}
 		}
-		for (Shadow shadow : Shadow.list) {
-			modelBatch.render(shadow.modelInstance, environ);
-		}
 		if (Box.instance != null) {
 			modelBatch.render(Box.instance, environ);
 		}
@@ -153,8 +152,21 @@ public class View implements Disposable {
 			}
 		}
 
-		if (LevelBuilder.ground != null) {
-			modelBatch.render(LevelBuilder.ground, environ);
+		totalGroundPieces = 0;
+		visibleGroundPieces = 0;
+		for (ModelInstance groundPiece : LevelBuilder.groundPieces) {
+			totalGroundPieces++;
+			if (groundPieceVisibilityCheck(groundPiece)) {
+				visibleGroundPieces++;
+				modelBatch.render(groundPiece, environ);
+			}
+		}
+		modelBatch.end();
+
+		// draw particle effects in a separate batch to make depth testing work correctly
+		modelBatch.begin(camera);
+		for (Shadow shadow : Shadow.list) {
+			modelBatch.render(shadow.modelInstance, environ);
 		}
 		drawParticleEffects();
 		modelBatch.end();
@@ -273,6 +285,18 @@ public class View implements Disposable {
 	public void storeSize() {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
+	}
+
+	public static int totalGroundPieces;
+	public static int visibleGroundPieces;
+	private boolean groundPieceVisibilityCheck(ModelInstance modelInst) {
+		float halfWidth = LevelBuilder.groundPieceSize / 2f;
+		modelInst.transform.getTranslation(tmp);
+		// we want the center of the piece
+		tmp.add(halfWidth, 0, halfWidth);
+		return camera.frustum.sphereInFrustum(tmp, LevelBuilder.groundPieceSize);
+		// this naive method is useful for debugging to see pop-in/pop-out
+		//return camera.frustum.pointInFrustum(tmp);
 	}
 
 	@Override

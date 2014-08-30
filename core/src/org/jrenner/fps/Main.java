@@ -35,16 +35,16 @@ public class Main extends ApplicationAdapter {
 	public AbstractClient client;
 	public static boolean hasClient;
 	public InputMultiplexer inputMulti;
-	public static Application.ApplicationType Platform;
+	public static Application.ApplicationType platform;
 	public static ServerType serverType;
 	
 	@Override
 	public void create () {
 		Log.setLevel(Log.DEBUG);
-		Platform = Gdx.app.getType();
+		platform = Gdx.app.getType();
 		// we can pretend to be Android while running on desktop to test mobile features
 		// such as mobile-specific input
-		// Platform = Application.ApplicationType.Android;
+		//platform = Application.ApplicationType.Android;
 		Assets assets = new Assets();
 		assets.loadAll();
 		Log.debug("finished loading assets");
@@ -207,18 +207,18 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public static boolean isAndroid() {
-		return Platform == Application.ApplicationType.Android;
+		return platform == Application.ApplicationType.Android;
 	}
 
 	public static boolean isIOS() {
-		return Platform == Application.ApplicationType.iOS;
+		return platform == Application.ApplicationType.iOS;
 	}
 
 	public static boolean isDesktop() {
-		return Platform == Application.ApplicationType.Desktop;
+		return platform == Application.ApplicationType.Desktop;
 	}
 
-	public static boolean isHeadless() { return Platform == Application.ApplicationType.HeadlessDesktop; }
+	public static boolean isHeadless() { return platform == Application.ApplicationType.HeadlessDesktop; }
 
 	public static NetClient getNetClient() {
 		return (NetClient) inst.client;

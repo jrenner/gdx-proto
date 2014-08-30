@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.DepthTestAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
@@ -69,17 +70,19 @@ public class ModelManager {
 		long attr = Usage.TextureCoordinates | Usage.Position;
 		TextureRegion region = Assets.getAtlas().findRegion("sprites/test-guy");
 		Material mat = new Material(TextureAttribute.createDiffuse(region.getTexture()));
-		mat.set(new BlendingAttribute());
+		boolean blended = true;
+		float opacity = 1f;
+		mat.set(new BlendingAttribute(blended, GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, opacity));
 		MeshPartBuilder mpb = mb.part("rect", GL20.GL_TRIANGLES, attr, mat);
 		mpb.setUVRange(region);
 		// the coordinates are offset so that we can easily set the center position to align with the entity's body
 		float sz = 2f; // size
 		float b = -sz/2; // base
 		float max = sz/2; // max
-		Vector3 bl = new Vector3(b, b, b);
-		Vector3 br = new Vector3(b, max, b);
-		Vector3 tr = new Vector3(max, max, b);
-		Vector3 tl = new Vector3(max, b, b);
+		Vector3 bl = new Vector3(b, b, 0f);
+		Vector3 br = new Vector3(b, max, 0f);
+		Vector3 tr = new Vector3(max, max, 0f);
+		Vector3 tl = new Vector3(max, b, 0f);
 		Vector3 norm = new Vector3(0f, 0f, 1f);
 		mpb.rect(bl, tl, tr, br, norm);
 		billboardTestModel = mb.end();

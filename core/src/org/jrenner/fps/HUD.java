@@ -142,7 +142,8 @@ public class HUD {
 
 	private StringBuilder sb = new StringBuilder();
 
-	boolean debugHUD = false;
+	/** output extra debug info to the in-game HUD */
+	boolean debugHUD = true;
 
 	public void update() {
 		//if (Main.frame % 10 != 0) return;
@@ -179,6 +180,7 @@ public class HUD {
 			sb.append("\n\nPhysics time: ").append(String.format("%4s", Main.physicsTime));
 			sb.append("\nGround dist: ").append(String.format("%.4f", player.entity.distFromGround));
 			sb.append("\nGround normal: ").append(Tools.fmt(Physics.inst.getFloorNormal(player.entity.getPosition())));
+			sb.append("\nGroundPiece visibility: ").append(View.visibleGroundPieces).append(" / ").append(View.totalGroundPieces);
 		}
 		sb.append("\nPress T to chat\nPress R to respawn");
 		label.setText(sb.toString());

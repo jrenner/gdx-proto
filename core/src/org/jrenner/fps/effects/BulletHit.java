@@ -46,7 +46,7 @@ public class BulletHit {
 				ent.adjustVelocity(tmp);
 				// TODO don't damage players yet, no respawn or death code exists
 				if (!ent.isPlayer()) {
-					ent.applyDamage(25f);
+					ent.applyDamage(20f);
 				}
 			}
 		}

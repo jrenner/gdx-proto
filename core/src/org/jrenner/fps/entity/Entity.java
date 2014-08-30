@@ -156,7 +156,7 @@ public abstract class Entity {
 			}
 		}
 		handleCollisions();
-		distFromGround = Physics.inst.distanceFromGround(movement.getPosition(), dimen);
+		updateDistFromGround();
 		int groundRayHits = Physics.lastDistanceFromGroundRayHitCount;
 		float avgDist = Physics.lastDistanceFromGroundAvgDist;
 		// when the ray went the full length and did not hit the ground, NaN is the return value
@@ -450,6 +450,14 @@ public abstract class Entity {
 		health -= dmg;
 		if (health <= 0f) {
 			destroy();
+		}
+	}
+
+	public void updateDistFromGround() {
+		if (Main.isMobile()) {
+			distFromGround = Physics.inst.distanceFromGroundFast(movement.getPosition(), dimen);
+		} else {
+			distFromGround = Physics.inst.distanceFromGround(movement.getPosition(), dimen);
 		}
 	}
 

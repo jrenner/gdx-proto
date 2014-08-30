@@ -233,9 +233,37 @@ public class Physics implements Disposable {
 	private static Vector3[] rectVectors = new Vector3[]{new Vector3(), new Vector3(), new Vector3(), new Vector3()};
 
 	public static int lastDistanceFromGroundRayHitCount;
+	/** if a four-corners raycast was used, more than one ray might have hit, and the avg dist is stored here
+	 * otherwise it is equal to the dist of the single ray hit */
 	public static float lastDistanceFromGroundAvgDist;
 
-	/** finds the distance from the bottom of the passed dimensions to the ground
+	/** finds the distance from the bottom of the of the passed dimensions to the ground
+	 * This method only uses the center point
+	 * This is simpler than checking for each of the four corners
+	 * but less accurate
+	 * @return distance to the ground, or Float.NaN when raycast did not hit the ground */
+	public float distanceFromGroundFast(Vector3 position, Vector3 dimen) {
+		float hitDist = Float.NaN;
+		float downStep = 2f + dimen.y; // length of ray
+		float rayOriginHeight = 0f;
+		// test single point
+		rectVectors[0].set(position);
+		Vector3 point = rectVectors[0];
+		castRayStaticOnly(point, tmp.set(point).sub(0f, downStep, 0f));
+		if (raycastReport.hit) {
+			hitDist = raycastReport.hitDistance;
+		}
+		if (!Float.isNaN(hitDist)) {
+			// if embedded in ground, a negative value will be returned
+			hitDist -= (rayOriginHeight + dimen.y/2f);
+		}
+		lastDistanceFromGroundAvgDist = hitDist;
+		return hitDist;
+	}
+
+	/** finds the distance from the bottom of the passed dimensions to the ground.
+	 * This method uses the four corners of the dimensions
+	 * this is more expensive than checking a single point, but also more accurate
 	 * @return distance to the ground, or Float.NaN when raycast did not hit ground */
 	public float distanceFromGround(Vector3 position, Vector3 dimen) {
 		lastDistanceFromGroundRayHitCount = 0;
@@ -246,7 +274,7 @@ public class Physics implements Disposable {
 		float x = dimen.x / 4f;
 		float z = dimen.z / 4f;
 		float rayOriginHeight = 0f;
-		// by starting the ray from the top of the dimensions
+		// by starting the ray from the center of the dimensions
 		// we can catch cases where the dimensions are already partially
 		// embedded underneath the ground.
 		// in this case, a negative distance will be returned
@@ -265,7 +293,7 @@ public class Physics implements Disposable {
 				}
 			}
 		}
-		// we started the ray from the top, but we want the distance to ground from the bottom
+		// we started the ray from the center, but we want the distance to ground from the bottom
 		if (!Float.isNaN(lowest)) {
 			// if embedded in ground, a negative value will be returned
 			lowest -= (rayOriginHeight + dimen.y/2f);

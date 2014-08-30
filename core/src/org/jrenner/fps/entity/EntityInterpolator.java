@@ -62,9 +62,6 @@ public class EntityInterpolator {
 		entity.getPosition().set(prev.position).lerp(next.position, getInterpolationAlpha());
 		tmp.set(prev.rotation).slerp(next.rotation, getInterpolationAlpha());
 		entity.setYawPitchRoll(tmp);
-		/*if (Main.frame % 60 == 0) {
-			System.out.println("set YPR for Entity[" + entity.id + "]: " + Tools.fmt(tmp));
-		}*/
 	}
 
 	/** we store all old state to be replayed on top of server updates */
@@ -97,9 +94,9 @@ public class EntityInterpolator {
 			float timeStep = 1f;
 			entity.movement.applyVelocity(timeStep, false);
 		}
-		// finished apply client input, the result is our predicted position
+		// finished applying client input, the result is our predicted position
 		nextPosition.set(entity.getPosition());
-		// now restore pre-predicition velocity
+		// now restore pre-prediction velocity
 		entity.setVelocity(currentVel);
 
 		// now we interpolate from our last position to our new predicted position, to smooth out errors
