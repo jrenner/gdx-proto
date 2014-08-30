@@ -6,8 +6,6 @@ import org.jrenner.fps.Log;
 import org.jrenner.fps.Main;
 import org.jrenner.fps.View;
 import org.jrenner.fps.entity.DynamicEntity;
-import org.jrenner.fps.event.ClientEvent;
-import org.jrenner.fps.event.ServerEvent;
 import org.jrenner.fps.net.LocalServer;
 import org.jrenner.fps.net.packages.ChatMessage;
 
@@ -21,7 +19,7 @@ public class LocalClient extends AbstractClient {
 		}
 		server = (LocalServer) Main.inst.server;
 		DynamicEntity playerEnt = server.createPlayer();
-		assignPlayerToId(playerEnt.id);
+		assignClientPlayerToId(playerEnt.id);
 		Log.debug("connected, created player: " + playerEnt.id);
 		server.sendPlayerConnectedChatMessage(playerEnt.id);
 	}

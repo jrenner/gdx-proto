@@ -175,6 +175,7 @@ public class NetServer extends AbstractServer {
 		Entity ent = Entity.getEntityById(req.id);
 		// TODO in the future put more fields into the response
 		EntityInfoRequest.Response resp = new EntityInfoRequest.Response();
+		resp.isPlayer = isPlayerEntity(ent.id);
 		resp.id = ent.id;
 		if (isPlayerEntity(ent.id)) {
 			resp.graphicsType = Entity.EntityGraphicsType.Model;

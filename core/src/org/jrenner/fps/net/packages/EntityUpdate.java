@@ -1,6 +1,7 @@
 package org.jrenner.fps.net.packages;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Pool;
 import org.jrenner.fps.utils.Pooler;
 
 public class EntityUpdate {

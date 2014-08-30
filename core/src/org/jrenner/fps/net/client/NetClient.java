@@ -236,11 +236,11 @@ public class NetClient extends AbstractClient {
 
 	private void handleEntityInfoRequestResponse(EntityInfoRequest.Response resp) {
 		Log.debug("EntityInfo response: " + resp.id);
-		Main.inst.clientEventManager.addEventToQueue(new ClientEvent.CreateEntity(resp.id, resp.graphicsType));
+		Main.inst.clientEventManager.addEventToQueue(new ClientEvent.CreateEntity(resp.id, resp.isPlayer, resp.graphicsType));
 	}
 
 	private void handleLevelGeometry(ServerMessage.LevelGeometry geo) {
-		Log.debug("Server send level static geometry information, size: " + geo.staticPieces.length);
+		Log.debug("Server sent level static geometry information, size: " + geo.staticPieces.length);
 		Main.inst.clientEventManager.addEventToQueue(new ClientEvent.CreateLevelStatics(geo.staticPieces));
 	}
 

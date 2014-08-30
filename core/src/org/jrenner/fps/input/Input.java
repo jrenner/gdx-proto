@@ -199,6 +199,12 @@ public class Input extends InputAdapter {
 
 	/** process player controls and send to server */
 	public void playerControls() {
+		/** this method will only be called on a client, it works in the following way:
+		 * translation inputs are added to a vector
+		 * if the vector is not zero, the player's entity has its relative destination set to the vector
+		 * if this instance of the app is not a server (either NetServer or LocalServer)
+		 * the CommandPackage is transmitted to the server
+		 */
 		Player player = Main.inst.client.player;
 		if (player == null) return;
 		CommandPackage cmdPack = Pooler.movementPackage();
@@ -214,7 +220,7 @@ public class Input extends InputAdapter {
 			View.inst.hud.getMoveTranslation(tmp);
 		}
 		if (!tmp.isZero()) {
-			player.entity.setRelativeDestinationByYaw(tmp.nor());
+			player.entity.setRelativeDestinationByYaw(tmp.nor().scl(0.1f));
 		} else {
 			player.entity.setDestination(null);
 		}

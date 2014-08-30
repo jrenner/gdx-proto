@@ -4,10 +4,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.jrenner.fps.LevelBuilder;
-import org.jrenner.fps.LevelStatic;
 import org.jrenner.fps.Log;
 import org.jrenner.fps.Main;
-import org.jrenner.fps.Player;
 import org.jrenner.fps.Tools;
 import org.jrenner.fps.View;
 import org.jrenner.fps.effects.BulletHit;
@@ -26,7 +24,7 @@ public class ClientEventManager {
 			for (ClientEvent event : eventQueue) {
 				if (event instanceof AssignPlayerId) {
 					AssignPlayerId assignPlayer = (AssignPlayerId) event;
-					Main.inst.client.assignPlayerToId(assignPlayer.id);
+					Main.inst.client.assignClientPlayerToId(assignPlayer.id);
 					Log.debug("Player assigned to entity with ID: " + assignPlayer.id);
 				} else if (event instanceof CreateEntity) {
 					CreateEntity create = (CreateEntity) event;
@@ -34,7 +32,7 @@ public class ClientEventManager {
 					if (dynEnt != null) {
 						Log.debug("entity already exists, aborting.");
 					} else {
-						dynEnt = DynamicEntity.createEntity(create.id, create.graphicsType);
+						dynEnt = DynamicEntity.createEntity(create.id, create.isPlayer, create.graphicsType);
 						Log.debug("created entity: " + dynEnt.id);
 					}
 				} else if (event instanceof DestroyEntity) {

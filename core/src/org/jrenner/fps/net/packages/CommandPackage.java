@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Pool;
 import org.jrenner.fps.Direction;
 
+/** CommandPackage is the input data from the client that is sent over the net to an online server */
 public class CommandPackage implements Pool.Poolable {
 	public static final int FORWARD      = 0x01;
 	public static final int BACK         = 0x02;
@@ -15,13 +16,6 @@ public class CommandPackage implements Pool.Poolable {
 	public static final int DOWN         = 0x20;
 	public static final int JUMP         = 0x40;
 	public static final int SHOOT        = 0x80;
-	// switch to float based rotations to support mouse better
-/*	public static final int YAW_LEFT = 0x0040;
-	public static final int YAW_RIGHT = 0x0080;
-	public static final int PITCH_UP = 0x0100;
-	public static final int PITCH_DOWN = 0x0200;
-	public static final int ROLL_LEFT    = 0x0400;
-	public static final int ROLL_RIGHT   = 0x0800;*/
 
 	public int commandBits;
 	public float yaw;

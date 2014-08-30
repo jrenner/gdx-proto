@@ -36,14 +36,13 @@ public abstract class AbstractClient {
 
 	public abstract void disconnectedFromServer();
 
-	public void assignPlayerToId(int id) {
+	public void assignClientPlayerToId(int id) {
 		playerId = id;
 		DynamicEntity ent = (DynamicEntity) Entity.getEntityById(id);
 		if (ent != null) {
-			player = new Player();
-			player.entity = ent;
-			if (Main.inst.client == null) throw new GdxRuntimeException("bad");
-			ent.setPlayer(Main.inst.client.player);
+			player = new Player(ent);
+			if (Main.inst.client == null) throw new GdxRuntimeException("no client");
+			ent.setPlayer(player);
 		} else {
 			//throw new GdxRuntimeException("bad");
 			Log.error("couldn't find entity for assignPlayerToId: " + id);

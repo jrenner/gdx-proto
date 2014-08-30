@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.jrenner.fps.Main;
 import org.jrenner.fps.Physics;
+import org.jrenner.fps.Player;
 import org.jrenner.fps.Shadow;
 import org.jrenner.fps.effects.BulletHit;
 import org.jrenner.fps.move.GroundMovement;
@@ -24,9 +25,12 @@ public class DynamicEntity extends Entity {
 		return dynEnt;
 	}
 
-	public static DynamicEntity createEntity(int id, EntityGraphicsType graphicsType) {
+	public static DynamicEntity createEntity(int id, boolean isPlayer, EntityGraphicsType graphicsType) {
 		DynamicEntity dynEnt = createEntityNoId(graphicsType);
 		assignEntityID(dynEnt, id);
+		if (Main.isClient() && isPlayer) {
+			dynEnt.setPlayer(new Player(dynEnt));
+		}
 		return dynEnt;
 	}
 
@@ -64,7 +68,10 @@ public class DynamicEntity extends Entity {
 		boolean testSimpleAI = true;
 		super.update(timeStep);
 		if (testSimpleAI && this.player == null) {
-			lookAt(Main.inst.client.player.entity.getPosition());
+			if (Main.isClient() && Main.inst.client.player != null) {
+				// look at the player entity (billboard behaviour, always face the camera)
+				lookAt(Main.inst.client.player.entity.getPosition());
+			}
 			long now = TimeUtils.millis();
 			movement.cancelDestinationAtThreshold(3f);
 			if ((now - lastSetDestTime) >= nextDestInterval) {
@@ -76,15 +83,6 @@ public class DynamicEntity extends Entity {
 				nextDestInterval = MathUtils.random(5000, 15000);
 			}
 		}
-		/*if (testSimpleAI && Main.isServer && !Main.inst.server.playerEntityIds.contains(this.id, false) && Main.inst.server.playerEntityIds.size > 0) {
-			int playerId = Main.inst.server.playerEntityIds.random();
-			Entity player = Entity.getEntityById(playerId);
-			faceTowards(player.getPosition());
-			tmp.set(player.getPosition()).sub(getPosition());
-			float dist = tmp.len() - 15f;
-			tmp.nor().scl(dist).add(getPosition());
-			movement.setDestination(tmp);
-		}*/
 		if (shooting) {
 			if (tickCountdown <= 0) {
 				shoot();

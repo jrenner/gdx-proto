@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.jrenner.fps.Main;
+import org.jrenner.fps.Tools;
 import org.jrenner.fps.net.client.EntityFrame;
 import org.jrenner.fps.net.packages.EntityUpdate;
 
@@ -41,12 +42,11 @@ public class EntityInterpolator {
 				posError.set(entity.getPosition()).sub(currentFrame.position);
 			}
 		}
-		if (entity.getPlayer() == null) {
-			// interpolate non-player entities
-			interpolate(oldFrame, currentFrame);
-		} else {
-			// client prediction for players
+		// use client prediction for self, interpolate all other entities
+		if (Main.isClient() && Main.inst.client.player.entity == entity) {
 			clientPrediction();
+		} else {
+			interpolate(oldFrame, currentFrame);
 		}
 	}
 
@@ -62,6 +62,9 @@ public class EntityInterpolator {
 		entity.getPosition().set(prev.position).lerp(next.position, getInterpolationAlpha());
 		tmp.set(prev.rotation).slerp(next.rotation, getInterpolationAlpha());
 		entity.setYawPitchRoll(tmp);
+		/*if (Main.frame % 60 == 0) {
+			System.out.println("set YPR for Entity[" + entity.id + "]: " + Tools.fmt(tmp));
+		}*/
 	}
 
 	/** we store all old state to be replayed on top of server updates */

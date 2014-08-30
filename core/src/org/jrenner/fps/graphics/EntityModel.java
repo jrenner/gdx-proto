@@ -32,7 +32,7 @@ public class EntityModel {
 
 	/** don't draw the client's model (don't see yourself) */
 	public boolean isClientEntity() {
-		if (!Main.isClient()) {
+		if (!Main.isClient() || Main.inst.client.player == null) {
 			return false;
 		} else {
 			return entity == Main.inst.client.player.entity;

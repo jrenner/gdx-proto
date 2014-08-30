@@ -11,6 +11,7 @@ public class EntityInfoRequest {
 	public static class Response {
 		public int id;
 		public Entity.EntityGraphicsType graphicsType;
+		public boolean isPlayer;
 		// add more things like health, speed, graphics type, etc
 	}
 }

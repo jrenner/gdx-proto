@@ -117,7 +117,9 @@ public class Main extends ApplicationAdapter {
 
 			updateWorld();
 		} catch (Exception e) {
-			Gdx.input.setCursorCatched(false);
+			if (!isHeadless()) {
+				Gdx.input.setCursorCatched(false);
+			}
 			throw new GdxRuntimeException(e);
 		}
 	}
@@ -216,7 +218,11 @@ public class Main extends ApplicationAdapter {
 		return Platform == Application.ApplicationType.Desktop;
 	}
 
+	public static boolean isHeadless() { return Platform == Application.ApplicationType.HeadlessDesktop; }
+
 	public static NetClient getNetClient() {
 		return (NetClient) inst.client;
 	}
+
+	public static NetServer getNetServer() { return (NetServer) inst.server; }
 }

@@ -7,6 +7,7 @@ import org.jrenner.fps.Main;
 import org.jrenner.fps.utils.Pooler;
 import org.jrenner.fps.entity.Entity;
 
+/** Contains game state information that is sent over the net from Server to Client */
 public class ServerUpdate implements Pool.Poolable {
 	public int tickNum;
 	public int playerInputTick; // the last input processed from the player who will receive this update
@@ -41,9 +42,9 @@ public class ServerUpdate implements Pool.Poolable {
 		if (processed) throw new GdxRuntimeException("serverUpdate already processed");
 		for (EntityUpdate entUpdate : entityUpdates) {
 			Entity ent = Entity.getEntityById(entUpdate.getEntityId());
-			if (ent != null && ent.interpolator != null) {
+			if (ent != null) {
 				if (Main.inst.client.player == null && ent.id == Main.inst.client.playerId) {
-					Main.inst.client.assignPlayerToId(ent.id);
+					Main.inst.client.assignClientPlayerToId(ent.id);
 					Log.debug("Entity matched player id, entity was assigned to player: " + ent.id);
 				}
 				ent.interpolator.handleUpdateFromServer(entUpdate, playerInputTick);

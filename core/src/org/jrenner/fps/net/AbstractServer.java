@@ -79,6 +79,10 @@ public abstract class AbstractServer {
 
 				// Rotation
 				ent.setYawPitchRoll(cmd.yaw, cmd.pitch, cmd.roll);
+/*				if (Main.frame % 120 == 0) {
+					System.out.println("rot for[" + ent.id + "]: " + String.format("YPR: %.0f, %.0f, %.0f",
+							cmd.yaw, cmd.pitch, cmd.roll));
+				}*/
 
 				if (ent instanceof DynamicEntity) {
 					DynamicEntity dynEnt = (DynamicEntity) ent;
@@ -206,9 +210,7 @@ public abstract class AbstractServer {
 	public DynamicEntity createPlayer() {
 		DynamicEntity playerEnt = DynamicEntity.createEntityNoId(Entity.EntityGraphicsType.Model);
 		Entity.assignEntityID(playerEnt);
-		Player player = new Player();
-		player.entity = playerEnt;
-		playerEnt.setPlayer(new Player());
+		playerEnt.setPlayer(new Player(playerEnt));
 		return playerEnt;
 	}
 

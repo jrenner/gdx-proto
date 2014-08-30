@@ -12,8 +12,8 @@ public class DesktopLauncher {
 		cfg.title = "FPS";
 		cfg.resizable = true;
 		//cfg.samples = 8; // anti-aliasing
-		cfg.width = 1024;
-		cfg.height = 768;
+		cfg.width = 800;
+		cfg.height = 600;
 		cfg.fullscreen = false;
 		cfg.r = 8;
 		cfg.g = 8;

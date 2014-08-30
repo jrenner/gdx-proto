@@ -18,10 +18,12 @@ public abstract class ClientEvent {
 	/** Tell the client to create an entity to match one that already exists on the server */
 	public static class CreateEntity extends ClientEvent {
 		public int id;
+		public boolean isPlayer;
 		public Entity.EntityGraphicsType graphicsType;
 
-		public CreateEntity(int id, Entity.EntityGraphicsType graphicsType) {
+		public CreateEntity(int id, boolean isPlayer, Entity.EntityGraphicsType graphicsType) {
 			this.id = id;
+			this.isPlayer = isPlayer;
 			this.graphicsType = graphicsType;
 		}
 	}
