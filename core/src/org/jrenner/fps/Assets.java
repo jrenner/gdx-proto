@@ -69,6 +69,7 @@ public class Assets {
 			manager.load("models/gate.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp1.g3db", HeadlessModel.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", HeadlessModel.class, modelParam);
+			manager.load("models/mount.g3db", HeadlessModel.class, modelParam);
 		} else {
 			ModelLoader.ModelParameters modelParam = new ModelLoader.ModelParameters();
 			modelParam.textureParameter = modTexParam;
@@ -77,6 +78,7 @@ public class Assets {
 			manager.load("models/strange-ramp1.g3db", Model.class, modelParam);
 			manager.load("models/strange-ramp2.g3db", Model.class, modelParam);
 			manager.load("models/skybox.g3db", Model.class, modelParam);
+			manager.load("models/mount.g3db", Model.class, modelParam);
 		}
 
 		if (Main.isClient()) {
@@ -138,7 +140,6 @@ public class Assets {
 		manager.load("textures/skybox/yneg.png", Texture.class, skyTextureParam);
 		manager.load("textures/skybox/zpos.png", Texture.class, skyTextureParam);
 		manager.load("textures/skybox/zneg.png", Texture.class, skyTextureParam);
-
 
 		// load Texture Atlas
 		manager.load("texture-packs/texture-pack.atlas", TextureAtlas.class);
