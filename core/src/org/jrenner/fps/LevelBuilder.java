@@ -4,10 +4,13 @@ import org.jrenner.fps.headless.HeadlessModel;
 import org.jrenner.fps.terrain.Terrain;
 import org.jrenner.fps.terrain.TerrainChunk;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -40,6 +43,10 @@ public class LevelBuilder {
 	public static void createLevel() {
 		// Create a terrain
 		TerrainChunk chunk = Terrain.CreateMeshChunk(Assets.manager.get("models/mount.g3db", Model.class));
+		
+		//chunk.setNormalMap(Assets.manager.get("models/mount.png", Texture.class));
+		//chunk.modelInstance.materials.get(0).set(TextureAttribute.createDiffuse(Assets.manager.get("models/mount.fbm", Texture.class)));
+
 		Terrain.addChunk(chunk, -50, -50);
 		
 		if (Main.isServer()) {

@@ -73,7 +73,7 @@ public class View implements Disposable {
 		float fov = 67f;
 		camera = new PerspectiveCamera(fov, width(), height());
 		// camera.far affects frustrum culling, so a shorter distance can boost performance
-		camera.far = 60f;
+		camera.far = 200f;
 		camera.near = 0.01f;
 		resetCamera();
 
@@ -85,7 +85,7 @@ public class View implements Disposable {
 		camLight = new PointLight();
 		float intensity = 100f;
 		camLight.set(new Color(0.2f, 0.2f, 0.2f, 1f), 0f, 0f, 0f, intensity);
-		ColorAttribute ambientLight = ColorAttribute.createAmbient(new Color(0.1f, 0.1f, 0.1f, 1f));
+		ColorAttribute ambientLight = new ColorAttribute(ColorAttribute.AmbientLight, .2f , .2f, .2f ,1);//ColorAttribute.createAmbient(new Color(1f, 1f, 1f, 1f));
 		environ.set(ambientLight);
 		ColorAttribute fog = new ColorAttribute(ColorAttribute.Fog);
 		fog.color.set(fogColor);
