@@ -43,10 +43,6 @@ public class LevelBuilder {
 	public static void createLevel() {
 		// Create a terrain
 		TerrainChunk chunk = Terrain.CreateMeshChunk(Assets.manager.get("models/mount.g3db", Model.class));
-		
-		//chunk.setNormalMap(Assets.manager.get("models/mount.png", Texture.class));
-		//chunk.modelInstance.materials.get(0).set(TextureAttribute.createDiffuse(Assets.manager.get("models/mount.fbm", Texture.class)));
-
 		Terrain.addChunk(chunk, -50, -50);
 		
 		if (Main.isServer()) {

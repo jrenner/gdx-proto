@@ -73,7 +73,7 @@ public class View implements Disposable {
 		float fov = 67f;
 		camera = new PerspectiveCamera(fov, width(), height());
 		// camera.far affects frustrum culling, so a shorter distance can boost performance
-		camera.far = 200f;
+		camera.far = 60f;
 		camera.near = 0.01f;
 		resetCamera();
 

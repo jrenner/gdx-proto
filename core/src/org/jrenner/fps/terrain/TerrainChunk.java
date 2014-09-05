@@ -2,7 +2,6 @@ package org.jrenner.fps.terrain;
 
 import org.jrenner.fps.Physics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
@@ -34,21 +32,16 @@ public class TerrainChunk implements Disposable{
 		this.sceneObjects = new Array<ModelInstance>();
 	}
 	
-	AnimationController con;
 	public TerrainChunk(ModelInstance model, btCollisionObject obj) {
 		this();
 		this.modelInstance = model;
 		this.body = obj;
 		calculateBoundingBox();
-		con = new AnimationController(modelInstance);
-		//con.action("ocean|walk", 10, 1, null, 1);
-		con.animate("grid|GridAction.001", -1, null, 2);
 	}
 	
 	// Render a chunk
 	public void render(ModelBatch batch, Environment env) {
 		batch.render(modelInstance, env);
-		con.update(Gdx.graphics.getDeltaTime());
 		
 		for (ModelInstance m : sceneObjects) {
 			batch.render(m, env);
