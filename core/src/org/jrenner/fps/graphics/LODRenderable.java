@@ -3,6 +3,7 @@ package org.jrenner.fps.graphics;
 
 import org.jrenner.fps.View;
 
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.Pool;
 
 /**
  * The LODRenderable class is responsible for managing the level of detail for an object.
- * HOW: replace @ModelInstance class with this class and use set() to put some models in it
+ * HOW: replace @ModelInstance class with this class and use @put() to put some models in it
  * 
  * LOD level 1 is the highest resolution model and the last should be the model with lowest polygon.
  * 
@@ -22,7 +23,7 @@ import com.badlogic.gdx.utils.Pool;
  * 
  * TODO be able to texture stream
  * 
- * @author Simon
+ * @author Simon Bothen
  *
  */
 public class LODRenderable implements RenderableProvider {
@@ -56,12 +57,27 @@ public class LODRenderable implements RenderableProvider {
 		this.lods.put(1, model);
 		this.currenctLod = 1;
 	}
+	
+	/**
+	 * @param model the model you want to use
+	 * @param nodes an array of nodes that will be used for LOD, the first string should be the highres node
+	 */
+	public LODRenderable (Model model, String... nodes) {
+		this.lods = new OrderedMap<>(nodes.length);
+		this.position = new Vector3();
+		for (int i = 0; i < nodes.length; i++) {
+			this.lods.put((i + 1), new ModelInstance(model, nodes[i]));
+		}
+		this.currenctLod = 1;
+	}
 
 	private int currenctLod;
 	
-	/** Be sure to call lod() with the modelbatch
+	/** Be sure to use calculate to update the LOD model
 	 * @return */
-	public LODRenderable lod () {
+	public LODRenderable calculate () {
+		if (lods.size <= 1) return this;
+		
 		// len2 for performance
 		currenctLod = (int)((dist.set(View.inst.getCamera().position).sub(position).len2() / MAX_LOD_AREA) * lods.size); 
 
@@ -105,7 +121,7 @@ public class LODRenderable implements RenderableProvider {
 		return this;
 	}
 
-	public void set (int lodlevel, ModelInstance model) {
+	public void put (int lodlevel, ModelInstance model) {
 		if (lodlevel <= 0 || lodlevel > lods.size)
 			try {
 				throw new Exception("LOD Level can not be lower that 1 or higher than the max value");
