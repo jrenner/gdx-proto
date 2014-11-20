@@ -37,7 +37,7 @@ I made GDX-Proto so show how one might implemented all the basic pieces you need
 
 **A pre-built jar of the [desktop demo can be downloaded here](https://github.com/jrenner/gdx-proto/blob/master/bin/desktop-1.0.jar?raw=true).**
 
-**[Android APK](https://github.com/jrenner/gdx-proto/blob/master/bin/android-debug-unaligned.apk?raw=true)**
+**[Android APK](https://github.com/jrenner/gdx-proto/blob/master/bin/android.apk?raw=true)**
 The apk is currently setup just to launch a localclient
 
 To play a simple local, singleplayer demo run the `desktop:run` gradle task
