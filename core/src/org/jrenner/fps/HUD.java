@@ -135,7 +135,7 @@ public class HUD {
 
 		SpriteDrawable crossDraw = new SpriteDrawable(Crosshair.create());
 		Image crosshair = new Image(crossDraw);
-		crosshair.setCenterPosition(View.width() / 2, View.height() / 2);
+		crosshair.setPosition(View.width() / 2, View.height() / 2, Align.center);
 		stage.addActor(crosshair);
 
 		createChatField();
