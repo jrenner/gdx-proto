@@ -2,19 +2,19 @@
 
 When I decided to create GDX-Proto, I had been playing with libgdx's 3D API for about 6 months on and off. I often see libgdx users at a loss when it comes to starting with 3D.  The 2D side of libgdx is well documented and has many examples and tutorials, but when it comes to 3D, there are much less resources available (side note: Xoppa's [3D tutorial series](http://blog.xoppa.com/basic-3d-using-libgdx-2/) are a must read!)
 
-I made GDX-Proto so show how one might implemented all the basic pieces you need to create a simple FPS with libgdx.  I wouldn't use GDX-Proto to create a game with, since it might be a little rough in some areas, but I think it is a great resource to see how one could implement physics, graphics, and networking for a 3d game.
+I made GDX-Proto to show how one might implement all the basic pieces you need to create a simple FPS (first person shooter) with libgdx.  I don't recommend using GDX-Proto to create a game, since it might be a little rough in some areas, but I think it is a great resource to see how one could implement physics, graphics, and networking for a 3d game.
 
 ![screenshot](img/fps-demo-screen2.jpg)
 
 ## Overview of Features
 
 ### Graphics
-- Basic 3d rendering using a slightly modified version of the default libgdx 3d shader. It takes advantage of the new libgdx 3D API.
+- Basic 3d rendering with the new libgdx 3D API.
 - 3D Particle system based on the new libgdx 3d particle system (version 1.2.1+, not included in 1.2.0)
-- game entities can be rendered as 3d models or flat sprites
+- Game entities that can be rendered as 3d models or flat sprites that face the camera
 
 ### Physics
-- The Bullet physics library is used for collision detection, but not for collision resolution.  This allows for fast and efficient collision detection without the performance penalties of a fully simulated bullet world.  A default collision resolution system is included in the Physics class, but it can be modified to suit your needs.
+- The Bullet physics library is used for collision detection, but not for collision resolution.  This allows for fast and efficient collision detection without the performance hit of a fully simulated bullet world.  A default collision resolution system is included in the Physics class.
 - Raycasting for projectile hit detection 
 
 ### Networking
