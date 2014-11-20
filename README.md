@@ -1,24 +1,17 @@
 #GDX-Proto - A lightweight 3D engine built with [libgdx](http://libgdx.badlogicgames.com)
 
+When I decided to create GDX-Proto, I had been playing with libgdx's 3D API for about 6 months on and off. I often see libgdx users at a loss when it comes to starting with 3D.  The 2D side of libgdx is well documented and has many examples and tutorials, but when it comes to 3D, there are much less resources available (side note: Xoppa's [3D tutorial series](http://blog.xoppa.com/basic-3d-using-libgdx-2/) are a must read!)
+
+I made GDX-Proto so show how one might implemented all the basic pieces you need to create a simple FPS with libgdx.  I wouldn't use GDX-Proto to create a game with, since it might be a little rough in some areas, but I think it is a great resource to see how one could implement physics, graphics, and networking for a 3d game.
+
 ![screenshot](img/fps-demo-screen2.jpg)
-
----------------
-
-###GDX-Proto is immature. Breaking changes are to be expected. Code might be a bit messy before it gets a nice refactoring.
-
------------
-
-GDX-Proto is a lightweight 3d engine built with two main objectives:
-- Provide an open source codebase showing how to do many basic and essential things for 3d games with [libgdx](http://libgdx.badlogicgames.com), a cross-platform Java game framework.
-- Provide a simple, extensible 3d engine that takes care of lower-level things such as physics and networking.
-
-While the current version is implemented as a First Person Shooter (FPS) demo, the code is highly adaptable for other uses, without too much work.
 
 ## Overview of Features
 
 ### Graphics
 - Basic 3d rendering using a slightly modified version of the default libgdx 3d shader. It takes advantage of the new libgdx 3D API.
 - 3D Particle system based on the new libgdx 3d particle system (version 1.2.1+, not included in 1.2.0)
+- game entities can be rendered as 3d models or flat sprites
 
 ### Physics
 - The Bullet physics library is used for collision detection, but not for collision resolution.  This allows for fast and efficient collision detection without the performance penalties of a fully simulated bullet world.  A default collision resolution system is included in the Physics class, but it can be modified to suit your needs.
@@ -39,9 +32,6 @@ While the current version is implemented as a First Person Shooter (FPS) demo, t
 - Basic Entity system with DynamicEntities, represented by either Decals (Billboard sprites) or 3D models
 - Movement component class handles acceleration, velocity, position, rotation, max speeds
 - Subclasses of Movement: GroundMovement and FlyingMovement
-
-### Using GDX-Proto For Your Own Projects
-Currently, GDX-Proto does not exist as a library.  The best way to use it for your own project is to use it as a base for a new project, and remove parts you do not wish, while adding your own code on top.  In the future it may be modified to be more convenient.
 
 ## Demo - First Person Shooter
 
