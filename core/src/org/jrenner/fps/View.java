@@ -24,6 +24,8 @@ import org.jrenner.fps.graphics.EntityModel;
 import org.jrenner.fps.graphics.ModelManager;
 import org.jrenner.fps.net.packages.ChatMessage;
 import org.jrenner.fps.particles.Particles;
+import org.jrenner.fps.terrain.Terrain;
+import org.jrenner.fps.terrain.TerrainChunk;
 
 public class View implements Disposable {
 	public static View inst;
@@ -83,7 +85,7 @@ public class View implements Disposable {
 		camLight = new PointLight();
 		float intensity = 100f;
 		camLight.set(new Color(0.2f, 0.2f, 0.2f, 1f), 0f, 0f, 0f, intensity);
-		ColorAttribute ambientLight = ColorAttribute.createAmbient(new Color(0.1f, 0.1f, 0.1f, 1f));
+		ColorAttribute ambientLight = new ColorAttribute(ColorAttribute.AmbientLight, .1f , .1f, .1f ,1);
 		environ.set(ambientLight);
 		ColorAttribute fog = new ColorAttribute(ColorAttribute.Fog);
 		fog.color.set(fogColor);
@@ -178,10 +180,22 @@ public class View implements Disposable {
 		updateCamera();
 
 		long skyStart = TimeUtils.millis();
-		updateSky();
 		modelBatch.begin(camera);
 		if (Sky.isEnabled()) {
+			Sky.update(camera.position);
 			modelBatch.render(Sky.modelInstance);
+		}
+		
+		if (Terrain.chunks != null) {
+			for (TerrainChunk chunk : Terrain.chunks) {
+				chunk.render(modelBatch, environ);
+			}
+		}
+		
+		if (LevelBuilder.staticGeometry != null) {
+			for (ModelInstance staticGeo : LevelBuilder.staticGeometry) {
+				modelBatch.render(staticGeo, environ);
+			}
 		}
 		skyTimes.add((int) TimeUtils.timeSinceMillis(skyStart));
 
@@ -214,7 +228,11 @@ public class View implements Disposable {
 		}
 		staticTimes.add((int) TimeUtils.timeSinceMillis(staticStart));
 
+		/*
+		totalGroundPieces = 0;
+=======
 		long groundStart = TimeUtils.millis();
+>>>>>>> FETCH_HEAD
 		visibleGroundPieces = 0;
 		for (ModelInstance groundPiece : LevelBuilder.groundPieces) {
 			if (groundPieceVisibilityCheck(groundPiece)) {
@@ -222,7 +240,9 @@ public class View implements Disposable {
 				modelBatch.render(groundPiece, environ);
 			}
 		}
-		groundTimes.add((int) TimeUtils.timeSinceMillis(groundStart));
+<<<<<<< HEAD
+		*/
+		//groundTimes.add((int) TimeUtils.timeSinceMillis(groundStart));
 		modelBatch.end();
 
 		// draw particle effects in a separate batch to make depth testing work better
@@ -256,12 +276,6 @@ public class View implements Disposable {
 		Particles.inst.system.draw();
 		Particles.inst.system.end();
 		modelBatch.render(Particles.inst.system);
-	}
-	
-	private void updateSky() {
-		if (Sky.isEnabled()) {
-			Sky.update(camera.position);
-		}
 	}
 	
 	private void updateLights() {
@@ -355,6 +369,9 @@ public class View implements Disposable {
 		height = Gdx.graphics.getHeight();
 	}
 
+	/*
+	public static int totalGroundPieces;
+=======
 	public static int visibleGroundPieces;
 	private boolean groundPieceVisibilityCheck(ModelInstance modelInst) {
 		float halfWidth = LevelBuilder.groundPieceSize / 2f;
@@ -366,6 +383,7 @@ public class View implements Disposable {
 		// this naive method is useful for debugging to see pop-in/pop-out
 		//return camera.frustum.pointInFrustum(tmp);
 	}
+	*/
 
 	public static int visibleEntities;
 	private boolean entityVisibilityCheck(EntityModel entModel) {
